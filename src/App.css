@@ -508,6 +508,7 @@ img {
 }
 
 .capabilities-panel {
+  scroll-margin-top: 110px;
   display: grid;
   grid-template-columns: minmax(280px, 0.72fr) minmax(560px, 1.28fr);
   gap: clamp(44px, 6vw, 92px);

@@ -468,7 +468,7 @@ function ProfileCard() {
       </div>
 
       <div className="profile-actions reveal-item">
-        <a className="profile-action primary" href="#about">查看简历</a>
+        <a className="profile-action primary" href="#capabilities">查看简历</a>
         <a className="profile-action secondary" href="#contact">联系我 <span aria-hidden="true">↗</span></a>
       </div>
     </aside>
@@ -477,7 +477,7 @@ function ProfileCard() {
 
 function CapabilitiesPanel() {
   return (
-    <section className="capabilities-panel reveal-item" aria-labelledby="capabilities-title">
+    <section className="capabilities-panel reveal-item" id="capabilities" aria-labelledby="capabilities-title">
       <div className="capabilities-copy">
         <p className="capabilities-kicker">Capabilities / 02</p>
         <h2 id="capabilities-title">我的能力</h2>
