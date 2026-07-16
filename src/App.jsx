@@ -62,7 +62,6 @@ import qianshanApplicationMug from "../assets/qianshan-ip/application-mug.png";
 const navItems = [
   { href: "#work", label: "作品集" },
   { href: "#about", label: "AI 观点" },
-  { href: "#process", label: "设计流程" },
   { href: "#contact", label: "联系我" },
 ];
 
@@ -586,15 +585,33 @@ function usePagePath() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  function navigate(path) {
+  function navigate(path, targetId) {
+    const hash = targetId ? `#${targetId}` : "";
+
     if (getCurrentPagePath() === path) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.pushState({}, "", `${getAppPath(path)}${hash}`);
+
+      if (targetId) {
+        document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
       return;
     }
 
-    window.history.pushState({}, "", getAppPath(path));
+    window.history.pushState({}, "", `${getAppPath(path)}${hash}`);
     setPagePath(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (targetId) {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   return { pagePath, navigate };
@@ -759,10 +776,10 @@ function WorkSection({ onOpenPoster, onOpenTeaProject, onOpenUiProject, onOpenBr
   );
 }
 
-function PosterArchivePage({ onBackHome }) {
+function PosterArchivePage({ onBackToWork }) {
   return (
     <main className="poster-page" id="top">
-      <button className="back-link reveal-item" type="button" onClick={onBackHome}>返回主页</button>
+      <button className="back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
       <section className="poster-hero section-reveal is-visible" aria-labelledby="poster-title">
         <p className="eyebrow">Photography archive</p>
         <h1 id="poster-title">我的摄影作品</h1>
@@ -869,10 +886,10 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio }) {
   );
 }
 
-function TeaProjectPage({ onBackHome }) {
+function TeaProjectPage({ onBackToWork }) {
   return (
     <main className="case-page" id="top">
-      <button className="back-link reveal-item" type="button" onClick={onBackHome}>返回主页</button>
+      <button className="back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
 
       <section className="case-hero section-reveal is-visible" aria-labelledby="tea-project-title">
         <div className="case-hero-copy reveal-item">
@@ -930,11 +947,11 @@ function TeaProjectPage({ onBackHome }) {
   );
 }
 
-function YueErTingProjectPage({ onBackHome }) {
+function YueErTingProjectPage({ onBackToWork }) {
   return (
     <main className="ui-case-page" id="top">
-      <button className="back-link ui-case-back-link reveal-item" type="button" onClick={onBackHome}>
-        返回主页
+      <button className="back-link ui-case-back-link reveal-item" type="button" onClick={onBackToWork}>
+        返回作品集
       </button>
 
       <section className="ui-case-intro section-reveal is-visible" aria-labelledby="yueerting-title">
@@ -954,11 +971,11 @@ function YueErTingProjectPage({ onBackHome }) {
   );
 }
 
-function QianshanProjectPage({ onBackHome }) {
+function QianshanProjectPage({ onBackToWork }) {
   return (
     <main className="qianshan-page" id="top">
-      <button className="back-link qianshan-back-link reveal-item" type="button" onClick={onBackHome}>
-        返回主页
+      <button className="back-link qianshan-back-link reveal-item" type="button" onClick={onBackToWork}>
+        返回作品集
       </button>
 
       <section className="qianshan-hero section-reveal is-visible" aria-labelledby="qianshan-title">
@@ -1105,17 +1122,21 @@ export default function App() {
   const isQianshanPage = pagePath === "/works/qianshan-farm";
   const isDetailPage = isPosterPage || isTeaProjectPage || isYueErTingPage || isQianshanPage;
 
+  function returnToWorkSection() {
+    navigate("/", "work");
+  }
+
   return (
     <>
       {!isDetailPage ? <Header /> : null}
       {isPosterPage ? (
-        <PosterArchivePage onBackHome={() => navigate("/")} />
+        <PosterArchivePage onBackToWork={returnToWorkSection} />
       ) : isTeaProjectPage ? (
-        <TeaProjectPage onBackHome={() => navigate("/")} />
+        <TeaProjectPage onBackToWork={returnToWorkSection} />
       ) : isYueErTingPage ? (
-        <YueErTingProjectPage onBackHome={() => navigate("/")} />
+        <YueErTingProjectPage onBackToWork={returnToWorkSection} />
       ) : isQianshanPage ? (
-        <QianshanProjectPage onBackHome={() => navigate("/")} />
+        <QianshanProjectPage onBackToWork={returnToWorkSection} />
       ) : (
         <main id="top">
           <Hero />
