@@ -113,6 +113,12 @@ const workCategories = [
     tone: "neutral",
   },
   {
+    id: "posterDesign",
+    title: "海报作品",
+    body: "作品图片待上传",
+    tone: "soft",
+  },
+  {
     id: "poster",
     title: "摄影作品",
     label: "Poster / Layout / Visual",
@@ -269,7 +275,7 @@ const experienceRoute = [
   { year: "NOW", title: "寻找UI与视觉设计机会", body: "开放实习与工作机会" },
 ];
 
-const posterWorks = [
+const photographyWorks = [
   {
     id: "photo-campus-afternoon",
     title: "校园午后",
@@ -334,6 +340,8 @@ const posterWorks = [
     aspectRatio: "2 / 3",
   },
 ];
+
+const posterDesignWorks = [];
 
 function useScrollReveal() {
   useEffect(() => {
@@ -627,11 +635,17 @@ function WorkStrip({ work, onOpen, style }) {
 
   return (
     <Element
-      className={`work-strip reveal-item is-${work.tone}${onOpen ? "" : " is-static"}`}
+      className={`work-strip reveal-item is-${work.tone}${work.image ? "" : " is-placeholder"}${onOpen ? "" : " is-static"}`}
       style={style}
       {...(onOpen ? { type: "button", onClick: onOpen } : {})}
     >
-      <img src={work.image} alt="" aria-hidden="true" />
+      {work.image ? (
+        <img src={work.image} alt="" aria-hidden="true" />
+      ) : (
+        <span className="work-card-placeholder-art" aria-hidden="true">
+          <span>UPLOAD</span>
+        </span>
+      )}
       <span className="work-strip-shade" aria-hidden="true" />
       {onOpen ? (
         <span className="work-card-icon" aria-hidden="true">↗</span>
@@ -646,7 +660,13 @@ function WorkStrip({ work, onOpen, style }) {
   );
 }
 
-function WorkSection({ onOpenPoster, onOpenTeaProject, onOpenUiProject, onOpenBrandProject }) {
+function WorkSection({
+  onOpenPhotography,
+  onOpenPosterDesign,
+  onOpenTeaProject,
+  onOpenUiProject,
+  onOpenBrandProject,
+}) {
   const workTrackRef = useRef(null);
   const scrollFrameRef = useRef(null);
   const [scrollMetrics, setScrollMetrics] = useState({
@@ -728,7 +748,7 @@ function WorkSection({ onOpenPoster, onOpenTeaProject, onOpenUiProject, onOpenBr
     <section className="section work-section section-reveal" id="work" aria-labelledby="work-title">
       <div className="section-heading reveal-item">
         <h2 id="work-title">个人作品集</h2>
-        <p>作品先按方向进入：游戏 UI、App UI、摄影作品、品牌视觉设计。每个分类后续都会延展成独立页面和完整项目详情。</p>
+        <p>作品先按方向进入：游戏 UI、App UI、品牌视觉设计、海报作品与摄影作品。每个分类后续都会延展成独立页面和完整项目详情。</p>
       </div>
 
       <div className="work-carousel reveal-item">
@@ -748,11 +768,13 @@ function WorkSection({ onOpenPoster, onOpenTeaProject, onOpenUiProject, onOpenBr
                 ? onOpenTeaProject
                 : work.id === "ui"
                   ? onOpenUiProject
-                  : work.id === "poster"
-                    ? onOpenPoster
-                    : work.id === "brand"
-                      ? onOpenBrandProject
-                      : undefined}
+                  : work.id === "posterDesign"
+                    ? onOpenPosterDesign
+                    : work.id === "poster"
+                      ? onOpenPhotography
+                      : work.id === "brand"
+                        ? onOpenBrandProject
+                        : undefined}
             />
           ))}
         </div>
@@ -781,33 +803,41 @@ function WorkSection({ onOpenPoster, onOpenTeaProject, onOpenUiProject, onOpenBr
   );
 }
 
-function PosterArchivePage({ onBackToWork }) {
+function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works }) {
   return (
     <main className="poster-page" id="top">
       <button className="back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
       <section className="poster-hero section-reveal is-visible" aria-labelledby="poster-title">
-        <p className="eyebrow">Photography archive</p>
-        <h1 id="poster-title">我的摄影作品</h1>
+        <p className="eyebrow">{eyebrow}</p>
+        <h1 id="poster-title">{title}</h1>
       </section>
 
-      <section className="poster-archive" aria-label="Photography works archive">
-        <div className="poster-gallery">
-          {posterWorks.map((work, index) => (
-            <article
-              className="poster-work-card reveal-item"
-              key={work.id}
-              style={{ "--reveal-delay": `${Math.min(index * 80, 320)}ms` }}
-            >
-              <div className="poster-image-wrap" style={{ "--photo-ratio": work.aspectRatio }}>
-                <img src={work.image} alt={work.title} loading={index > 2 ? "lazy" : "eager"} />
-              </div>
-              <div className="poster-work-info">
-                <h2>{work.title}</h2>
-                <p>{work.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+      <section className="poster-archive" aria-label={ariaLabel}>
+        {works.length > 0 ? (
+          <div className="poster-gallery">
+            {works.map((work, index) => (
+              <article
+                className="poster-work-card reveal-item"
+                key={work.id}
+                style={{ "--reveal-delay": `${Math.min(index * 80, 320)}ms` }}
+              >
+                <div className="poster-image-wrap" style={{ "--photo-ratio": work.aspectRatio }}>
+                  <img src={work.image} alt={work.title} loading={index > 2 ? "lazy" : "eager"} />
+                </div>
+                <div className="poster-work-info">
+                  <h2>{work.title}</h2>
+                  <p>{work.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="archive-empty reveal-item is-visible" role="status">
+            <span>Poster files pending</span>
+            <h2>等待上传海报作品</h2>
+            <p>后续添加图片后，作品会自动按照真实尺寸进入瀑布流展示。</p>
+          </div>
+        )}
       </section>
     </main>
   );
@@ -1127,11 +1157,16 @@ function ContactSection() {
 export default function App() {
   useScrollReveal();
   const { pagePath, navigate } = usePagePath();
-  const isPosterPage = pagePath === "/works/poster";
+  const isPhotographyPage = pagePath === "/works/poster";
+  const isPosterDesignPage = pagePath === "/works/poster-design";
   const isTeaProjectPage = pagePath === "/works/tea-ui";
   const isYueErTingPage = pagePath === "/works/yueerting-ui";
   const isQianshanPage = pagePath === "/works/qianshan-farm";
-  const isDetailPage = isPosterPage || isTeaProjectPage || isYueErTingPage || isQianshanPage;
+  const isDetailPage = isPhotographyPage
+    || isPosterDesignPage
+    || isTeaProjectPage
+    || isYueErTingPage
+    || isQianshanPage;
 
   function returnToWorkSection() {
     navigate("/", "work");
@@ -1140,8 +1175,22 @@ export default function App() {
   return (
     <>
       {!isDetailPage ? <Header /> : null}
-      {isPosterPage ? (
-        <PosterArchivePage onBackToWork={returnToWorkSection} />
+      {isPhotographyPage ? (
+        <VisualArchivePage
+          onBackToWork={returnToWorkSection}
+          eyebrow="Photography archive"
+          title="我的摄影作品"
+          ariaLabel="Photography works archive"
+          works={photographyWorks}
+        />
+      ) : isPosterDesignPage ? (
+        <VisualArchivePage
+          onBackToWork={returnToWorkSection}
+          eyebrow="Poster archive"
+          title="我的海报作品"
+          ariaLabel="Poster design works archive"
+          works={posterDesignWorks}
+        />
       ) : isTeaProjectPage ? (
         <TeaProjectPage onBackToWork={returnToWorkSection} />
       ) : isYueErTingPage ? (
@@ -1152,7 +1201,8 @@ export default function App() {
         <main id="top">
           <Hero />
           <WorkSection
-            onOpenPoster={() => navigate("/works/poster")}
+            onOpenPhotography={() => navigate("/works/poster")}
+            onOpenPosterDesign={() => navigate("/works/poster-design")}
             onOpenTeaProject={() => navigate("/works/tea-ui")}
             onOpenUiProject={() => navigate("/works/yueerting-ui")}
             onOpenBrandProject={() => navigate("/works/qianshan-farm")}
