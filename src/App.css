@@ -1113,6 +1113,21 @@ img {
   padding: clamp(132px, 14vh, 154px) 0 clamp(44px, 6vh, 68px);
 }
 
+.assetguard-project-section {
+  display: grid;
+  gap: clamp(26px, 3vw, 40px);
+  margin-top: clamp(92px, 12vw, 156px);
+  padding: clamp(82px, 9vw, 118px) 0 clamp(18px, 3vw, 36px);
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+  background:
+    radial-gradient(circle at 82% 3%, rgba(79, 70, 229, 0.09), transparent 28%),
+    radial-gradient(circle at 12% 58%, rgba(137, 128, 255, 0.06), transparent 32%);
+}
+
+.assetguard-project-section .assetguard-case-intro {
+  margin-bottom: 0;
+}
+
 .ui-case-intro {
   width: calc(100vw - 64px);
   display: grid;
@@ -1135,6 +1150,15 @@ img {
   font-size: clamp(1rem, 1.35vw, 1.18rem);
   font-weight: 650;
   line-height: 1.65;
+}
+
+.assetguard-case-intro h1 {
+  color: #171821;
+  letter-spacing: -0.075em;
+}
+
+.assetguard-case-intro p {
+  max-width: 780px;
 }
 
 .ui-screen-showcase {
@@ -1179,6 +1203,8 @@ img {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
 }
 
 .ui-screen-card:hover {
@@ -1195,6 +1221,28 @@ img {
   border-radius: 22px;
   object-fit: cover;
   background: #fff;
+}
+
+.ui-screen-showcase.is-desktop {
+  --ui-desktop-card: min(82vw, 920px);
+}
+
+.ui-screen-showcase.is-desktop .ui-screen-track {
+  padding-inline: max(32px, calc((100vw - var(--ui-desktop-card)) / 2));
+  scroll-padding-inline: max(32px, calc((100vw - var(--ui-desktop-card)) / 2));
+}
+
+.ui-screen-showcase.is-desktop .ui-screen-card {
+  flex-basis: var(--ui-desktop-card);
+  padding: 8px;
+  border-radius: 30px;
+  scroll-snap-align: center;
+}
+
+.ui-screen-showcase.is-desktop .ui-screen-card img {
+  aspect-ratio: var(--ui-screen-ratio, 1280 / 1024);
+  border-radius: 22px;
+  object-fit: contain;
 }
 
 .ui-gallery-progress {
@@ -2344,6 +2392,10 @@ img {
 
   .ui-screen-showcase {
     gap: 28px;
+  }
+
+  .ui-screen-showcase.is-desktop {
+    --ui-desktop-card: min(88vw, 720px);
   }
 
   .ui-screen-track {

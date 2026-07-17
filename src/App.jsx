@@ -22,6 +22,18 @@ import yueAlbumStory from "../assets/yueerting/19-album-story.png";
 import yueLyrics from "../assets/yueerting/20-lyrics.png";
 import yueDownloads from "../assets/yueerting/21-downloads.png";
 import yuePurchasedAlbum from "../assets/yueerting/22-purchased-album.png";
+import assetGuardAccountLogin from "../assets/assetguard/01-account-login.jpg";
+import assetGuardQrLogin from "../assets/assetguard/02-qr-login.jpg";
+import assetGuardProfessionSelect from "../assets/assetguard/03-profession-select.jpg";
+import assetGuardQuickAccess from "../assets/assetguard/04-quick-access.jpg";
+import assetGuardLibrary from "../assets/assetguard/05-asset-library.jpg";
+import assetGuardAssetPreview from "../assets/assetguard/06-asset-preview.jpg";
+import assetGuardInspiration from "../assets/assetguard/07-inspiration-board.jpg";
+import assetGuardTagManagement from "../assets/assetguard/08-tag-management.jpg";
+import assetGuardLibraryUpload from "../assets/assetguard/09-library-upload.jpg";
+import assetGuardWorkflowUpload from "../assets/assetguard/10-workflow-upload.jpg";
+import assetGuardPhotoshopWorkflow from "../assets/assetguard/11-photoshop-workflow.jpg";
+import assetGuardAccountProfile from "../assets/assetguard/12-account-profile.jpg";
 import teaLobby from "../assets/tea-ui/01-lobby.png";
 import teaServingComplete from "../assets/tea-ui/02-serving-complete.png";
 import teaWarmCup from "../assets/tea-ui/03-warm-cup.png";
@@ -49,6 +61,10 @@ import photoTwilightSilhouette from "../assets/photography/06-twilight-silhouett
 import photoRiverfrontGoldenHour from "../assets/photography/07-riverfront-golden-hour.jpg";
 import photoSeasideLight from "../assets/photography/08-seaside-light.jpg";
 import photoWallShadows from "../assets/photography/09-wall-shadows.jpg";
+import posterIWatch from "../assets/posters/01-i-watch-smartwatch.png";
+import posterSlowlyCoffeeBrandBoard from "../assets/posters/02-slowly-coffee-brand-board.png";
+import posterSlowlyCoffeePackagingScene from "../assets/posters/03-slowly-coffee-packaging-scene.png";
+import posterDaylightSlowWake from "../assets/posters/04-daylight-slow-wake-coconut-latte.png";
 import qianshanCharacterHero from "../assets/qianshan-ip/character-hero.png";
 import qianshanCharacterTurnaround from "../assets/qianshan-ip/character-turnaround.png";
 import qianshanExpressionHappy from "../assets/qianshan-ip/expression-happy.png";
@@ -100,8 +116,8 @@ const workCategories = [
   },
   {
     id: "ui",
-    title: "悦耳听",
-    body: "音乐 App UI 界面设计",
+    title: "UI界面作品集",
+    body: "展示UI设计作品",
     image: yueWelcome,
     tone: "soft",
   },
@@ -115,7 +131,8 @@ const workCategories = [
   {
     id: "posterDesign",
     title: "海报作品",
-    body: "作品图片待上传",
+    body: "产品视觉与商业信息长图设计",
+    image: posterIWatch,
     tone: "soft",
   },
   {
@@ -157,6 +174,21 @@ const yueErTingScreens = [
   { id: "library", src: yueLibrary, alt: "悦耳听音乐库界面" },
   { id: "downloads", src: yueDownloads, alt: "悦耳听已下载歌曲界面" },
   { id: "playlist", src: yuePlaylist, alt: "悦耳听自建歌单界面" },
+];
+
+const assetGuardScreens = [
+  { id: "account-login", src: assetGuardAccountLogin, alt: "AssetGuard 账户登录界面" },
+  { id: "qr-login", src: assetGuardQrLogin, alt: "AssetGuard 扫码登录界面" },
+  { id: "profession-select", src: assetGuardProfessionSelect, alt: "AssetGuard 职业工作台选择界面" },
+  { id: "quick-access", src: assetGuardQuickAccess, alt: "AssetGuard 素材浏览器快速访问界面" },
+  { id: "asset-library", src: assetGuardLibrary, alt: "AssetGuard 素材库文件管理界面" },
+  { id: "asset-preview", src: assetGuardAssetPreview, alt: "AssetGuard 素材快速预览界面" },
+  { id: "inspiration", src: assetGuardInspiration, alt: "AssetGuard 灵感素材发现界面" },
+  { id: "tag-management", src: assetGuardTagManagement, alt: "AssetGuard 标签管理界面" },
+  { id: "library-upload", src: assetGuardLibraryUpload, alt: "AssetGuard 素材库上传文件界面" },
+  { id: "workflow-upload", src: assetGuardWorkflowUpload, alt: "AssetGuard 项目工作流上传文件界面" },
+  { id: "photoshop-workflow", src: assetGuardPhotoshopWorkflow, alt: "AssetGuard Photoshop 项目工作空间界面" },
+  { id: "account-profile", src: assetGuardAccountProfile, alt: "AssetGuard 账户与存储管理界面" },
 ];
 
 const teaProjectScreens = [
@@ -341,7 +373,36 @@ const photographyWorks = [
   },
 ];
 
-const posterDesignWorks = [];
+const posterDesignWorks = [
+  {
+    id: "poster-i-watch-smartwatch",
+    title: "I WATCH 智能手表产品宣传海报",
+    description: "以暖白配色、产品渲染与信息分区呈现智能手表的功能卖点。",
+    image: posterIWatch,
+    aspectRatio: "941 / 1672",
+  },
+  {
+    id: "poster-slowly-coffee-brand-board",
+    title: "SLOWLY COFFEE 品牌包装设计",
+    description: "以低饱和奶油色和咖啡棕建立品牌视觉，并展示包装、杯套与系列贴纸的应用系统。",
+    image: posterSlowlyCoffeeBrandBoard,
+    aspectRatio: "1536 / 1024",
+  },
+  {
+    id: "poster-slowly-coffee-packaging-scene",
+    title: "SLOWLY COFFEE 包装应用视觉",
+    description: "通过纸袋与饮品杯的暖调场景渲染，呈现品牌包装在真实消费环境中的视觉效果。",
+    image: posterSlowlyCoffeePackagingScene,
+    aspectRatio: "1402 / 1122",
+  },
+  {
+    id: "poster-daylight-slow-wake",
+    title: "白日慢醒 · 生椰拿铁产品海报",
+    description: "用柔和奶油色调、流动奶泡和产品特写表达生椰拿铁轻盈顺滑的口感。",
+    image: posterDaylightSlowWake,
+    aspectRatio: "1024 / 1536",
+  },
+];
 
 function useScrollReveal() {
   useEffect(() => {
@@ -748,7 +809,7 @@ function WorkSection({
     <section className="section work-section section-reveal" id="work" aria-labelledby="work-title">
       <div className="section-heading reveal-item">
         <h2 id="work-title">个人作品集</h2>
-        <p>作品先按方向进入：游戏 UI、App UI、品牌视觉设计、海报作品与摄影作品。每个分类后续都会延展成独立页面和完整项目详情。</p>
+        <p>作品先按方向进入：游戏 UI、App UI、品牌视觉设计、海报作品与摄影作品。每个分类都会延展成独立页面和完整项目详情。</p>
       </div>
 
       <div className="work-carousel reveal-item">
@@ -843,7 +904,7 @@ function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works }) {
   );
 }
 
-function UiScreenGallery({ screens, label, progressId, aspectRatio }) {
+function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode = "mobile" }) {
   const galleryRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -882,7 +943,7 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio }) {
 
   return (
     <div
-      className="ui-screen-showcase"
+      className={`ui-screen-showcase is-${displayMode}`}
       aria-label={label}
       style={{ "--ui-screen-ratio": aspectRatio }}
     >
@@ -1008,7 +1069,30 @@ function YueErTingProjectPage({ onBackToWork }) {
         progressId="yueerting-gallery-progress"
         aspectRatio="804 / 1748"
       />
+
+      <AssetGuardProjectSection />
     </main>
+  );
+}
+
+function AssetGuardProjectSection() {
+  return (
+    <section className="assetguard-project-section section-reveal" aria-labelledby="assetguard-title">
+      <div className="ui-case-intro assetguard-case-intro section-reveal is-visible">
+        <h1 id="assetguard-title" className="reveal-item is-visible">AssetGuard</h1>
+        <p className="reveal-item is-visible">
+          面向设计与内容团队的桌面端数字资产管理工具，将素材分类、标签、上传、检索与项目工作流整合到统一界面。
+        </p>
+      </div>
+
+      <UiScreenGallery
+        screens={assetGuardScreens}
+        label="AssetGuard 桌面端 UI 界面展示"
+        progressId="assetguard-gallery-progress"
+        aspectRatio="1280 / 1024"
+        displayMode="desktop"
+      />
+    </section>
   );
 }
 
