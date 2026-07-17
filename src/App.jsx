@@ -177,6 +177,11 @@ const teaProjectFacts = [
   { label: "项目名称", value: "客官请喝茶" },
   { label: "项目类型", value: "游戏 UI 界面设计" },
   { label: "我的角色", value: "游戏 UI 界面设计师" },
+  {
+    label: "宣传网站",
+    value: "访问宣传网站 ↗",
+    href: "https://leonoonlin-pixel.github.io/ke-guan-qing-he-cha/",
+  },
 ];
 
 const teaProjectContributions = [
@@ -902,7 +907,13 @@ function TeaProjectPage({ onBackToWork }) {
           {teaProjectFacts.map((fact) => (
             <div className="case-fact" key={fact.label}>
               <span>{fact.label}</span>
-              <strong>{fact.value}</strong>
+              {fact.href ? (
+                <a href={fact.href} target="_blank" rel="noreferrer">
+                  {fact.value}
+                </a>
+              ) : (
+                <strong>{fact.value}</strong>
+              )}
             </div>
           ))}
         </div>

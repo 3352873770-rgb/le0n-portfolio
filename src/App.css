@@ -1312,10 +1312,26 @@ img {
   text-transform: uppercase;
 }
 
-.case-fact strong {
+.case-fact strong,
+.case-fact a {
   color: var(--ink-soft);
   font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-weight: 850;
   line-height: 1.35;
+}
+
+.case-fact a {
+  width: fit-content;
+  text-decoration: underline;
+  text-decoration-color: rgba(17, 17, 17, 0.24);
+  text-underline-offset: 0.22em;
+  transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.case-fact a:hover,
+.case-fact a:focus-visible {
+  color: var(--ink);
+  text-decoration-color: currentColor;
 }
 
 .case-section {
