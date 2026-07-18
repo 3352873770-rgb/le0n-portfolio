@@ -2996,6 +2996,19 @@ img {
   font-weight: 700;
 }
 
+.resume-detail p a {
+  color: inherit;
+  text-decoration-color: rgba(31, 94, 255, 0.48);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.resume-detail p a:hover,
+.resume-detail p a:focus-visible {
+  color: var(--resume-blue);
+  text-decoration-color: currentColor;
+}
+
 .resume-portrait-wrap {
   width: calc(100% - 10px);
   aspect-ratio: 3 / 4;

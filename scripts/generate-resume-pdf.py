@@ -21,6 +21,7 @@ BODY = HexColor("#263447")
 MUTED = HexColor("#687284")
 PAPER = HexColor("#FBF8F1")
 LINE = Color(31 / 255, 94 / 255, 1, alpha=0.72)
+PORTFOLIO_URL = "https://3352873770-rgb.github.io/le0n-portfolio/#about"
 
 
 def register_fonts():
@@ -64,11 +65,22 @@ def draw_section_heading(pdf, english, chinese, x, y, width):
     return y - 34
 
 
-def draw_info_row(pdf, label, value, x, y):
+def draw_info_row(pdf, label, value, x, y, font_size=9.2, url=None):
     pdf.setFillColor(BLUE)
     pdf.circle(x + 3, y + 3, 2.4, fill=1, stroke=0)
     pdf.setFillColor(BODY)
-    pdf.setFont(FONT, 9.2)
+    if url:
+        pdf.setFont(FONT, 9.2)
+        pdf.drawString(x + 14, y, f"{label}：")
+        url_y = y - 14
+        pdf.setFillColor(BLUE)
+        pdf.setFont(FONT, font_size)
+        pdf.drawString(x + 14, url_y, value)
+        text_width = pdfmetrics.stringWidth(value, FONT, font_size)
+        pdf.linkURL(url, (x + 14, url_y - 2, x + 14 + text_width, url_y + font_size + 2), relative=0)
+        return y - 36
+
+    pdf.setFont(FONT, font_size)
     pdf.drawString(x + 14, y, f"{label}：{value}")
     return y - 22
 
@@ -149,7 +161,15 @@ def build_resume():
     info_y = draw_info_row(pdf, "所在地", "Guangzhou, China", margin, info_y)
     info_y = draw_info_row(pdf, "微信", "-LiA_Ang", margin, info_y)
     info_y = draw_info_row(pdf, "电话", "17820304443", margin, info_y)
-    draw_info_row(pdf, "作品集", "当前网站", margin, info_y)
+    draw_info_row(
+        pdf,
+        "作品集",
+        "https://3352873770-rgb.github.io/le0n-portfolio/#about",
+        margin,
+        info_y,
+        font_size=7.4,
+        url=PORTFOLIO_URL,
+    )
 
     avatar_width = left_width - 4
     avatar_height = 288
