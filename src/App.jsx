@@ -1019,9 +1019,6 @@ function Hero({ onOpenResume, resumeTriggerRef }) {
           <ProfileCard onOpenResume={onOpenResume} resumeTriggerRef={resumeTriggerRef} />
         </div>
       </div>
-
-      <CapabilitiesPanel />
-      <ExperienceRoute />
     </section>
   );
 }
@@ -1798,6 +1795,8 @@ export default function App() {
       ) : (
         <main className="home-page" id="top">
           <Hero onOpenResume={openResume} resumeTriggerRef={resumeTriggerRef} />
+          <CapabilitiesPanel />
+          <ExperienceRoute />
           <WorkSection
             onOpenPhotography={() => navigate("/works/poster")}
             onOpenPosterDesign={() => navigate("/works/poster-design")}
