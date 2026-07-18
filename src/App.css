@@ -4004,6 +4004,13 @@ img {
   --home-display-weight: 820;
 }
 
+.home-page > .capabilities-panel,
+.home-page > .experience-route {
+  width: min(1060px, calc(100vw - 96px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .site-header {
   top: 18px;
 }
@@ -4496,6 +4503,37 @@ img {
 }
 
 @media (max-width: 760px) {
+  .home-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-page > .hero {
+    order: 1;
+  }
+
+  .home-page > .work-section {
+    order: 2;
+    padding-top: 18px;
+  }
+
+  .home-page > .capabilities-panel {
+    order: 3;
+  }
+
+  .home-page > .experience-route {
+    order: 4;
+  }
+
+  .home-page > .about-section {
+    order: 5;
+  }
+
+  .home-page > .capabilities-panel,
+  .home-page > .experience-route {
+    width: min(100% - 42px, 1220px);
+  }
+
   .site-header {
     top: 14px;
   }
@@ -4567,6 +4605,11 @@ img {
 }
 
 @media (max-width: 520px) {
+  .home-page > .capabilities-panel,
+  .home-page > .experience-route {
+    width: calc(100vw - 36px);
+  }
+
   .home-page .hero-intro {
     font-size: clamp(2.55rem, 12vw, 3.65rem);
   }
