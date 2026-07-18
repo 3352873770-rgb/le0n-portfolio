@@ -20,93 +20,93 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import le0nWordmark from "../assets/le0n-wordmark-transparent.png";
-import profileAvatar from "../assets/profile-avatar-editorial.jpg";
-import resumePortrait from "../assets/resume-portrait-yellow.png";
-import yueWelcome from "../assets/yueerting/01-welcome.png";
-import uiPortfolioCover from "../assets/yueerting/ui-portfolio-cover.png";
-import yueStylePreference from "../assets/yueerting/02-style-preference.png";
-import yueArtistPreference from "../assets/yueerting/03-artist-preference.png";
-import yueExplore from "../assets/yueerting/05-explore.png";
-import yueSearch from "../assets/yueerting/06-search.png";
-import yueAlbum from "../assets/yueerting/07-album.png";
-import yueSong from "../assets/yueerting/08-song.png";
-import yuePlayer from "../assets/yueerting/09-player.png";
-import yueRadar from "../assets/yueerting/10-radar.png";
-import yueLibrary from "../assets/yueerting/11-library.png";
-import yuePlaylist from "../assets/yueerting/12-playlist.png";
-import yueLogin from "../assets/yueerting/13-login.png";
-import yueArtistDiscovery from "../assets/yueerting/14-artist-discovery.png";
-import yueArtistProfile from "../assets/yueerting/15-artist-profile.png";
-import yueArtistWorks from "../assets/yueerting/16-artist-works.png";
-import yueMv from "../assets/yueerting/17-mv.png";
-import yueSearchLibrary from "../assets/yueerting/18-search-library.png";
-import yueAlbumStory from "../assets/yueerting/19-album-story.png";
-import yueLyrics from "../assets/yueerting/20-lyrics.png";
-import yueDownloads from "../assets/yueerting/21-downloads.png";
-import yuePurchasedAlbum from "../assets/yueerting/22-purchased-album.png";
-import assetGuardAccountLogin from "../assets/assetguard/01-account-login.jpg";
-import assetGuardQrLogin from "../assets/assetguard/02-qr-login.jpg";
-import assetGuardProfessionSelect from "../assets/assetguard/03-profession-select.jpg";
-import assetGuardQuickAccess from "../assets/assetguard/04-quick-access.jpg";
-import assetGuardLibrary from "../assets/assetguard/05-asset-library.jpg";
-import assetGuardAssetPreview from "../assets/assetguard/06-asset-preview.jpg";
-import assetGuardInspiration from "../assets/assetguard/07-inspiration-board.jpg";
-import assetGuardTagManagement from "../assets/assetguard/08-tag-management.jpg";
-import assetGuardLibraryUpload from "../assets/assetguard/09-library-upload.jpg";
-import assetGuardWorkflowUpload from "../assets/assetguard/10-workflow-upload.jpg";
-import assetGuardPhotoshopWorkflow from "../assets/assetguard/11-photoshop-workflow.jpg";
-import assetGuardAccountProfile from "../assets/assetguard/12-account-profile.jpg";
-import emotionPetCreation from "../assets/emotion-pet/01-pet-creation.png";
-import emotionPetHome from "../assets/emotion-pet/02-pet-home.png";
-import emotionPetSelfieGuide from "../assets/emotion-pet/03-selfie-guide.png";
-import emotionPetVideoCapture from "../assets/emotion-pet/04-video-capture.png";
-import emotionPetAnalysisLoading from "../assets/emotion-pet/05-analysis-loading.png";
-import emotionPetObservationResult from "../assets/emotion-pet/06-observation-result.png";
-import redEnvelopeDailyCheckin from "../assets/red-envelope/01-daily-checkin.png";
-import redEnvelopeGrab from "../assets/red-envelope/02-red-envelope-grab.png";
-import redEnvelopeLuckyDraw from "../assets/red-envelope/03-lucky-draw.png";
-import redEnvelopeWithdrawal from "../assets/red-envelope/04-cash-withdrawal.png";
-import teaLobby from "../assets/tea-ui/01-lobby.png";
-import teaServingComplete from "../assets/tea-ui/02-serving-complete.png";
-import teaWarmCup from "../assets/tea-ui/03-warm-cup.png";
-import teaWhiskTea from "../assets/tea-ui/04-whisk-tea.png";
-import teaRinseTea from "../assets/tea-ui/05-rinse-tea.png";
-import teaPlaceTea from "../assets/tea-ui/06-place-tea.png";
-import teaHighPour from "../assets/tea-ui/07-high-pour.png";
-import teaLedgerModal from "../assets/tea-ui/08-tea-ledger-modal.png";
-import teaConcept01 from "../assets/tea-ui/09-concept-20260531-155137.png";
-import teaConcept02 from "../assets/tea-ui/10-concept-20260531-160828.png";
-import teaConcept03 from "../assets/tea-ui/11-concept-20260531-164304.png";
-import teaConcept04 from "../assets/tea-ui/12-concept-20260531-220850.png";
-import teaConcept05 from "../assets/tea-ui/13-concept-20260601-095020.png";
-import teaConcept06 from "../assets/tea-ui/14-concept-20260602-175013.png";
-import teaConcept07 from "../assets/tea-ui/15-concept-20260602-180156.png";
-import teaConcept08 from "../assets/tea-ui/16-concept-20260603-163218.png";
-import teaConcept09 from "../assets/tea-ui/17-concept-20260603-173256.png";
-import teaProjectCover from "../assets/tea-ui/tea-project-cover-night.png";
-import photoCampusAfternoon from "../assets/photography/01-campus-afternoon.jpg";
-import photoCrosswalkMotion from "../assets/photography/02-crosswalk-motion.jpg";
-import photoAmberStairway from "../assets/photography/03-amber-stairway.jpg";
-import photoNightNoodleShop from "../assets/photography/04-night-noodle-shop.jpg";
-import photoFloweringStreet from "../assets/photography/05-flowering-street.jpg";
-import photoTwilightSilhouette from "../assets/photography/06-twilight-silhouette.jpg";
-import photoRiverfrontGoldenHour from "../assets/photography/07-riverfront-golden-hour.jpg";
-import photoSeasideLight from "../assets/photography/08-seaside-light.jpg";
-import photoWallShadows from "../assets/photography/09-wall-shadows.jpg";
-import posterIWatch from "../assets/posters/01-i-watch-smartwatch.png";
-import posterSlowlyCoffeeBrandBoard from "../assets/posters/02-slowly-coffee-brand-board.png";
-import posterSlowlyCoffeePackagingScene from "../assets/posters/03-slowly-coffee-packaging-scene.png";
-import posterDaylightSlowWake from "../assets/posters/04-daylight-slow-wake-coconut-latte.png";
-import qianshanCharacterHero from "../assets/qianshan-ip/character-hero.png";
-import qianshanCharacterTurnaround from "../assets/qianshan-ip/character-turnaround.png";
-import qianshanExpressionHappy from "../assets/qianshan-ip/expression-happy.png";
-import qianshanExpressionSurprised from "../assets/qianshan-ip/expression-surprised.png";
-import qianshanExpressionWink from "../assets/qianshan-ip/expression-wink.png";
-import qianshanExpressionCool from "../assets/qianshan-ip/expression-cool.png";
-import qianshanApplicationBag from "../assets/qianshan-ip/application-bag.png";
-import qianshanApplicationNotebook from "../assets/qianshan-ip/application-notebook.png";
-import qianshanApplicationMug from "../assets/qianshan-ip/application-mug.png";
+import le0nWordmark from "../assets/le0n-wordmark-transparent.webp";
+import profileAvatar from "../assets/profile-avatar-editorial.webp";
+import resumePortrait from "../assets/resume-portrait-yellow.webp";
+import yueWelcome from "../assets/yueerting/01-welcome.webp";
+import uiPortfolioCover from "../assets/yueerting/ui-portfolio-cover.webp";
+import yueStylePreference from "../assets/yueerting/02-style-preference.webp";
+import yueArtistPreference from "../assets/yueerting/03-artist-preference.webp";
+import yueExplore from "../assets/yueerting/05-explore.webp";
+import yueSearch from "../assets/yueerting/06-search.webp";
+import yueAlbum from "../assets/yueerting/07-album.webp";
+import yueSong from "../assets/yueerting/08-song.webp";
+import yuePlayer from "../assets/yueerting/09-player.webp";
+import yueRadar from "../assets/yueerting/10-radar.webp";
+import yueLibrary from "../assets/yueerting/11-library.webp";
+import yuePlaylist from "../assets/yueerting/12-playlist.webp";
+import yueLogin from "../assets/yueerting/13-login.webp";
+import yueArtistDiscovery from "../assets/yueerting/14-artist-discovery.webp";
+import yueArtistProfile from "../assets/yueerting/15-artist-profile.webp";
+import yueArtistWorks from "../assets/yueerting/16-artist-works.webp";
+import yueMv from "../assets/yueerting/17-mv.webp";
+import yueSearchLibrary from "../assets/yueerting/18-search-library.webp";
+import yueAlbumStory from "../assets/yueerting/19-album-story.webp";
+import yueLyrics from "../assets/yueerting/20-lyrics.webp";
+import yueDownloads from "../assets/yueerting/21-downloads.webp";
+import yuePurchasedAlbum from "../assets/yueerting/22-purchased-album.webp";
+import assetGuardAccountLogin from "../assets/assetguard/01-account-login.webp";
+import assetGuardQrLogin from "../assets/assetguard/02-qr-login.webp";
+import assetGuardProfessionSelect from "../assets/assetguard/03-profession-select.webp";
+import assetGuardQuickAccess from "../assets/assetguard/04-quick-access.webp";
+import assetGuardLibrary from "../assets/assetguard/05-asset-library.webp";
+import assetGuardAssetPreview from "../assets/assetguard/06-asset-preview.webp";
+import assetGuardInspiration from "../assets/assetguard/07-inspiration-board.webp";
+import assetGuardTagManagement from "../assets/assetguard/08-tag-management.webp";
+import assetGuardLibraryUpload from "../assets/assetguard/09-library-upload.webp";
+import assetGuardWorkflowUpload from "../assets/assetguard/10-workflow-upload.webp";
+import assetGuardPhotoshopWorkflow from "../assets/assetguard/11-photoshop-workflow.webp";
+import assetGuardAccountProfile from "../assets/assetguard/12-account-profile.webp";
+import emotionPetCreation from "../assets/emotion-pet/01-pet-creation.webp";
+import emotionPetHome from "../assets/emotion-pet/02-pet-home.webp";
+import emotionPetSelfieGuide from "../assets/emotion-pet/03-selfie-guide.webp";
+import emotionPetVideoCapture from "../assets/emotion-pet/04-video-capture.webp";
+import emotionPetAnalysisLoading from "../assets/emotion-pet/05-analysis-loading.webp";
+import emotionPetObservationResult from "../assets/emotion-pet/06-observation-result.webp";
+import redEnvelopeDailyCheckin from "../assets/red-envelope/01-daily-checkin.webp";
+import redEnvelopeGrab from "../assets/red-envelope/02-red-envelope-grab.webp";
+import redEnvelopeLuckyDraw from "../assets/red-envelope/03-lucky-draw.webp";
+import redEnvelopeWithdrawal from "../assets/red-envelope/04-cash-withdrawal.webp";
+import teaLobby from "../assets/tea-ui/01-lobby.webp";
+import teaServingComplete from "../assets/tea-ui/02-serving-complete.webp";
+import teaWarmCup from "../assets/tea-ui/03-warm-cup.webp";
+import teaWhiskTea from "../assets/tea-ui/04-whisk-tea.webp";
+import teaRinseTea from "../assets/tea-ui/05-rinse-tea.webp";
+import teaPlaceTea from "../assets/tea-ui/06-place-tea.webp";
+import teaHighPour from "../assets/tea-ui/07-high-pour.webp";
+import teaLedgerModal from "../assets/tea-ui/08-tea-ledger-modal.webp";
+import teaConcept01 from "../assets/tea-ui/09-concept-20260531-155137.webp";
+import teaConcept02 from "../assets/tea-ui/10-concept-20260531-160828.webp";
+import teaConcept03 from "../assets/tea-ui/11-concept-20260531-164304.webp";
+import teaConcept04 from "../assets/tea-ui/12-concept-20260531-220850.webp";
+import teaConcept05 from "../assets/tea-ui/13-concept-20260601-095020.webp";
+import teaConcept06 from "../assets/tea-ui/14-concept-20260602-175013.webp";
+import teaConcept07 from "../assets/tea-ui/15-concept-20260602-180156.webp";
+import teaConcept08 from "../assets/tea-ui/16-concept-20260603-163218.webp";
+import teaConcept09 from "../assets/tea-ui/17-concept-20260603-173256.webp";
+import teaProjectCover from "../assets/tea-ui/tea-project-cover-night.webp";
+import photoCampusAfternoon from "../assets/photography/01-campus-afternoon.webp";
+import photoCrosswalkMotion from "../assets/photography/02-crosswalk-motion.webp";
+import photoAmberStairway from "../assets/photography/03-amber-stairway.webp";
+import photoNightNoodleShop from "../assets/photography/04-night-noodle-shop.webp";
+import photoFloweringStreet from "../assets/photography/05-flowering-street.webp";
+import photoTwilightSilhouette from "../assets/photography/06-twilight-silhouette.webp";
+import photoRiverfrontGoldenHour from "../assets/photography/07-riverfront-golden-hour.webp";
+import photoSeasideLight from "../assets/photography/08-seaside-light.webp";
+import photoWallShadows from "../assets/photography/09-wall-shadows.webp";
+import posterIWatch from "../assets/posters/01-i-watch-smartwatch.webp";
+import posterSlowlyCoffeeBrandBoard from "../assets/posters/02-slowly-coffee-brand-board.webp";
+import posterSlowlyCoffeePackagingScene from "../assets/posters/03-slowly-coffee-packaging-scene.webp";
+import posterDaylightSlowWake from "../assets/posters/04-daylight-slow-wake-coconut-latte.webp";
+import qianshanCharacterHero from "../assets/qianshan-ip/character-hero.webp";
+import qianshanCharacterTurnaround from "../assets/qianshan-ip/character-turnaround.webp";
+import qianshanExpressionHappy from "../assets/qianshan-ip/expression-happy.webp";
+import qianshanExpressionSurprised from "../assets/qianshan-ip/expression-surprised.webp";
+import qianshanExpressionWink from "../assets/qianshan-ip/expression-wink.webp";
+import qianshanExpressionCool from "../assets/qianshan-ip/expression-cool.webp";
+import qianshanApplicationBag from "../assets/qianshan-ip/application-bag.webp";
+import qianshanApplicationNotebook from "../assets/qianshan-ip/application-notebook.webp";
+import qianshanApplicationMug from "../assets/qianshan-ip/application-mug.webp";
 
 const navItems = [
   { href: "#profile", label: "关于我" },
@@ -1077,7 +1077,14 @@ function WorkStrip({ work, onOpen, style }) {
       {...(onOpen ? { type: "button", onClick: onOpen } : {})}
     >
       {work.image ? (
-        <img src={work.image} alt="" aria-hidden="true" />
+        <img
+          src={work.image}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+        />
       ) : (
         <span className="work-card-placeholder-art" aria-hidden="true">
           <span>UPLOAD</span>
@@ -1259,7 +1266,13 @@ function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works, pag
                 style={{ "--reveal-delay": `${Math.min(index * 80, 320)}ms` }}
               >
                 <div className="poster-image-wrap" style={{ "--photo-ratio": work.aspectRatio }}>
-                  <img src={work.image} alt={work.title} loading={index > 2 ? "lazy" : "eager"} />
+                  <img
+                    src={work.image}
+                    alt={work.title}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : "low"}
+                  />
                 </div>
                 <div className="poster-work-info">
                   <h2>{work.title}</h2>
@@ -1284,6 +1297,28 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode 
   const galleryRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const batchSize = displayMode === "desktop" ? 2 : 3;
+  const [visibleCount, setVisibleCount] = useState(() => Math.min(batchSize, screens.length));
+
+  useEffect(() => {
+    setProgress(0);
+    setVisibleCount(Math.min(batchSize, screens.length));
+  }, [batchSize, screens]);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery || visibleCount >= screens.length) {
+      return undefined;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      if (gallery.scrollWidth <= gallery.clientWidth + 8) {
+        setVisibleCount((current) => Math.min(current + batchSize, screens.length));
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [batchSize, screens.length, visibleCount]);
 
   useEffect(() => () => {
     if (animationFrameRef.current) {
@@ -1301,6 +1336,14 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode 
       if (gallery) {
         const scrollRange = gallery.scrollWidth - gallery.clientWidth;
         setProgress(scrollRange > 0 ? (gallery.scrollLeft / scrollRange) * 100 : 0);
+
+        const preloadThreshold = Math.max(gallery.clientWidth * 0.7, 240);
+        const isNearLoadedEnd = gallery.scrollLeft + gallery.clientWidth
+          >= gallery.scrollWidth - preloadThreshold;
+
+        if (isNearLoadedEnd) {
+          setVisibleCount((current) => Math.min(current + batchSize, screens.length));
+        }
       }
       animationFrameRef.current = null;
     });
@@ -1330,13 +1373,19 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode 
         tabIndex="0"
         aria-label={`可横向滚动浏览${label}`}
       >
-        {screens.map((screen, index) => (
+        {screens.slice(0, visibleCount).map((screen, index) => (
           <figure
             className="ui-screen-card reveal-item"
             key={screen.id}
             style={{ "--reveal-delay": `${Math.min(index * 55, 330)}ms` }}
           >
-            <img src={screen.src} alt={screen.alt} loading={index > 4 ? "lazy" : "eager"} />
+            <img
+              src={screen.src}
+              alt={screen.alt}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
+            />
           </figure>
         ))}
       </div>
