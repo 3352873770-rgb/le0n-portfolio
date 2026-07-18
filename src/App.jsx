@@ -120,6 +120,8 @@ const appBasePath = import.meta.env.BASE_URL === "/"
   ? ""
   : import.meta.env.BASE_URL.replace(/\/$/, "");
 
+const portfolioUrl = "https://3352873770-rgb.github.io/le0n-portfolio/#about";
+
 function getCurrentPagePath() {
   const { pathname } = window.location;
 
@@ -361,7 +363,7 @@ const resumeDetails = [
   { icon: MapPin, label: "所在地", value: "Guangzhou, China" },
   { icon: MessageCircle, label: "微信", value: "-LiA_Ang" },
   { icon: Phone, label: "tel", value: "17820304443" },
-  { icon: Link2, label: "作品集", value: "当前网站" },
+  { icon: Link2, label: "作品集", value: "3352873770-rgb.github.io/le0n-portfolio/#about", href: portfolioUrl },
 ];
 
 const resumeSkills = [
@@ -838,7 +840,12 @@ function ResumeModal({ isOpen, onClose, onViewWorkflow }) {
               return (
                 <div className="resume-detail" key={item.label}>
                   <Icon aria-hidden="true" />
-                  <p><span>{item.label}：</span>{item.value}</p>
+                  <p>
+                    <span>{item.label}：</span>
+                    {item.href ? (
+                      <a href={item.href} target="_blank" rel="noreferrer">{item.value}</a>
+                    ) : item.value}
+                  </p>
                 </div>
               );
             })}
