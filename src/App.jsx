@@ -1,7 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  BookOpen,
+  Box,
+  Code2,
+  Download,
+  GraduationCap,
+  Link2,
+  LoaderCircle,
+  MapPin,
+  MessageCircle,
+  Palette,
+  Phone,
+  Sparkles,
+  Target,
+  TrendingUp,
+  UserRound,
+  PenTool,
+  Workflow,
+  Wrench,
+  X,
+} from "lucide-react";
 import le0nWordmark from "../assets/le0n-wordmark-transparent.png";
-import profileAvatar from "../assets/profile-avatar.jpg";
+import profileAvatar from "../assets/profile-avatar-editorial.jpg";
+import resumePortrait from "../assets/resume-portrait-yellow.png";
 import yueWelcome from "../assets/yueerting/01-welcome.png";
+import uiPortfolioCover from "../assets/yueerting/ui-portfolio-cover.png";
 import yueStylePreference from "../assets/yueerting/02-style-preference.png";
 import yueArtistPreference from "../assets/yueerting/03-artist-preference.png";
 import yueExplore from "../assets/yueerting/05-explore.png";
@@ -34,6 +57,16 @@ import assetGuardLibraryUpload from "../assets/assetguard/09-library-upload.jpg"
 import assetGuardWorkflowUpload from "../assets/assetguard/10-workflow-upload.jpg";
 import assetGuardPhotoshopWorkflow from "../assets/assetguard/11-photoshop-workflow.jpg";
 import assetGuardAccountProfile from "../assets/assetguard/12-account-profile.jpg";
+import emotionPetCreation from "../assets/emotion-pet/01-pet-creation.png";
+import emotionPetHome from "../assets/emotion-pet/02-pet-home.png";
+import emotionPetSelfieGuide from "../assets/emotion-pet/03-selfie-guide.png";
+import emotionPetVideoCapture from "../assets/emotion-pet/04-video-capture.png";
+import emotionPetAnalysisLoading from "../assets/emotion-pet/05-analysis-loading.png";
+import emotionPetObservationResult from "../assets/emotion-pet/06-observation-result.png";
+import redEnvelopeDailyCheckin from "../assets/red-envelope/01-daily-checkin.png";
+import redEnvelopeGrab from "../assets/red-envelope/02-red-envelope-grab.png";
+import redEnvelopeLuckyDraw from "../assets/red-envelope/03-lucky-draw.png";
+import redEnvelopeWithdrawal from "../assets/red-envelope/04-cash-withdrawal.png";
 import teaLobby from "../assets/tea-ui/01-lobby.png";
 import teaServingComplete from "../assets/tea-ui/02-serving-complete.png";
 import teaWarmCup from "../assets/tea-ui/03-warm-cup.png";
@@ -51,7 +84,7 @@ import teaConcept06 from "../assets/tea-ui/14-concept-20260602-175013.png";
 import teaConcept07 from "../assets/tea-ui/15-concept-20260602-180156.png";
 import teaConcept08 from "../assets/tea-ui/16-concept-20260603-163218.png";
 import teaConcept09 from "../assets/tea-ui/17-concept-20260603-173256.png";
-import teaProjectCover from "../assets/tea-ui/tea-project-cover.jpg";
+import teaProjectCover from "../assets/tea-ui/tea-project-cover-night.png";
 import photoCampusAfternoon from "../assets/photography/01-campus-afternoon.jpg";
 import photoCrosswalkMotion from "../assets/photography/02-crosswalk-motion.jpg";
 import photoAmberStairway from "../assets/photography/03-amber-stairway.jpg";
@@ -76,8 +109,10 @@ import qianshanApplicationNotebook from "../assets/qianshan-ip/application-noteb
 import qianshanApplicationMug from "../assets/qianshan-ip/application-mug.png";
 
 const navItems = [
+  { href: "#profile", label: "关于我" },
+  { href: "#capabilities", label: "我的能力" },
+  { href: "#experience", label: "经历" },
   { href: "#work", label: "作品集" },
-  { href: "#about", label: "AI 观点" },
   { href: "#contact", label: "联系我" },
 ];
 
@@ -107,19 +142,19 @@ function getAppPath(path) {
 
 const workCategories = [
   {
+    id: "ui",
+    title: "UI界面作品集",
+    body: "展示UI设计作品",
+    image: uiPortfolioCover,
+    tone: "soft",
+  },
+  {
     id: "frontend",
     title: "客官请喝茶",
     label: "React / Vite / Interaction",
     body: "游戏 UI 界面设计师",
     image: teaProjectCover,
     tone: "electric",
-  },
-  {
-    id: "ui",
-    title: "UI界面作品集",
-    body: "展示UI设计作品",
-    image: yueWelcome,
-    tone: "soft",
   },
   {
     id: "brand",
@@ -191,6 +226,22 @@ const assetGuardScreens = [
   { id: "account-profile", src: assetGuardAccountProfile, alt: "AssetGuard 账户与存储管理界面" },
 ];
 
+const emotionPetScreens = [
+  { id: "pet-creation", src: emotionPetCreation, alt: "情绪宠物初始宠物创建界面" },
+  { id: "pet-home", src: emotionPetHome, alt: "情绪宠物家园与今日状态界面" },
+  { id: "selfie-guide", src: emotionPetSelfieGuide, alt: "情绪宠物自拍观察引导界面" },
+  { id: "video-capture", src: emotionPetVideoCapture, alt: "情绪宠物五秒状态视频录制界面" },
+  { id: "analysis-loading", src: emotionPetAnalysisLoading, alt: "情绪宠物状态分析加载界面" },
+  { id: "observation-result", src: emotionPetObservationResult, alt: "情绪宠物今日状态观察结果界面" },
+];
+
+const redEnvelopeScreens = [
+  { id: "daily-checkin", src: redEnvelopeDailyCheckin, alt: "红包活动每日签到与奖励进度界面" },
+  { id: "red-envelope-grab", src: redEnvelopeGrab, alt: "红包活动限时抢红包与发放规则界面" },
+  { id: "lucky-draw", src: redEnvelopeLuckyDraw, alt: "红包活动转盘抽取机会界面" },
+  { id: "cash-withdrawal", src: redEnvelopeWithdrawal, alt: "红包活动支付宝提现界面" },
+];
+
 const teaProjectScreens = [
   { id: "lobby", src: teaLobby, alt: "客官请喝茶茶馆大厅界面" },
   { id: "serving-complete", src: teaServingComplete, alt: "客官请喝茶奉茶完成反馈界面" },
@@ -217,23 +268,49 @@ const teaProjectFacts = [
   { label: "我的角色", value: "游戏 UI 界面设计师" },
   {
     label: "宣传网站",
-    value: "访问宣传网站 ↗",
+    value: "客官请喝茶 ↗",
     href: "https://leonoonlin-pixel.github.io/ke-guan-qing-he-cha/",
   },
 ];
 
-const teaProjectContributions = [
+const teaProjectProcess = [
   {
-    title: "界面视觉方向",
-    body: "围绕游戏主题建立界面气质、字体层级、色彩氛围和基础视觉规范，让面试官能快速判断项目风格。",
+    title: "需求分析",
+    body: "从目标用户、游戏主题与核心体验出发，明确项目需要解决的问题和设计边界。",
   },
   {
-    title: "信息层级整理",
-    body: "把玩家需要看到的核心信息拆成主按钮、状态信息、任务入口和反馈区域，减少界面阅读压力。",
+    title: "玩法确定",
+    body: "围绕茶馆经营建立核心循环，梳理接待顾客、获取材料、制茶与奉茶的体验路径。",
   },
   {
-    title: "交互与落地表达",
-    body: "后续会把关键页面、操作流程和设计原因放进案例页，说明我不仅做视觉，也关注真实使用路径。",
+    title: "信息架构",
+    body: "整理大厅、备茶、茶铺、制茶流程与反馈状态之间的层级和跳转关系。",
+  },
+  {
+    title: "创新机制",
+    body: "将消消乐玩法融入材料获取环节，让资源收集与制茶过程形成更有趣的节奏。",
+  },
+  {
+    title: "UI 设计交付",
+    body: "完成高保真界面、关键交互状态与统一视觉语言，并整理为可持续迭代的设计稿。",
+  },
+];
+
+const teaProjectLearnings = [
+  {
+    label: "项目挑战",
+    title: "把不稳定的生成结果转化为可控的设计系统",
+    body: "项目初期，角色、色彩、材质与构图在多轮生成中持续漂移，直接影响界面统一性和后续迭代效率。我将问题从“提示词不够详细”重新判断为“缺少可复用的视觉约束”。",
+  },
+  {
+    label: "解决方法",
+    title: "建立参考图驱动的视觉基线与迭代规范",
+    body: "我选定基准参考图，拆解角色比例、色彩、材质、构图与组件规则；每轮只调整一个关键变量，再通过局部重绘完成精确修正，让设计过程可追踪、可复现。",
+  },
+  {
+    label: "项目收获",
+    title: "沉淀可复用的 AIGC + UI 设计工作流",
+    body: "最终稳定完成 17 个核心界面，并能在不破坏整体视觉语言的前提下快速修改局部内容。这套方法也可以迁移到其他 UI 项目，提升概念探索、交付与迭代效率。",
   },
 ];
 
@@ -255,7 +332,7 @@ const capabilities = [
 ];
 
 const contactLinks = [
-  { href: "mailto:hello@le0n.dev", label: "VX:-LiA_Ang" },
+  { type: "wechat", label: "VX:-LiA_Ang", value: "-LiA_Ang" },
   { href: "https://github.com/", label: "GitHub" },
   { href: "https://www.linkedin.com/", label: "LinkedIn" },
 ];
@@ -278,6 +355,23 @@ const profileInfo = [
   { label: "所在地", value: "Guangzhou, China" },
 ];
 
+const resumeDetails = [
+  { icon: GraduationCap, label: "学校", value: "中山大学南方学院" },
+  { icon: BookOpen, label: "专业", value: "数字媒体技术" },
+  { icon: MapPin, label: "所在地", value: "Guangzhou, China" },
+  { icon: MessageCircle, label: "微信", value: "-LiA_Ang" },
+  { icon: Phone, label: "tel", value: "17820304443" },
+  { icon: Link2, label: "作品集", value: "当前网站" },
+];
+
+const resumeSkills = [
+  { icon: Box, label: "UI / UX 设计", value: "信息架构、高保真界面、交互原型" },
+  { icon: Palette, label: "视觉设计", value: "海报、品牌视觉、商业视觉" },
+  { icon: Code2, label: "网页前端", value: "React、Vite、HTML / CSS、响应式页面" },
+  { icon: Sparkles, label: "AI 协作工作流", value: "需求分析、方案探索、视觉生成、组件规范、前端落地" },
+  { icon: Wrench, label: "工具", value: "Figma、Photoshop、Codex、Stitch、HappyHorus、Vizcom" },
+];
+
 const capabilityCards = [
   {
     number: "01",
@@ -297,6 +391,21 @@ const capabilityCards = [
     tools: ["ChatGPT", "Codex", "Stitch", "图像生成"],
     result: "需求梳理 · 快速原型 · 内容与素材生产",
   },
+  {
+    number: "04",
+    title: "海报 / 文创产品设计",
+    tools: ["Photoshop (PS)", "Illustrator (AI)"],
+    result: "海报设计 · 文创产品设计 · 商业视觉",
+  },
+];
+
+const capabilityHighlights = [
+  "各类任务的工作流设计",
+  "UI设计稿-Figma",
+  "设计稿转 HTML",
+  "海报设计",
+  "AIGC 视频制作",
+  "熟练掌握Photoshop",
 ];
 
 const experienceRoute = [
@@ -471,10 +580,33 @@ function useScrollReveal() {
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState("#profile");
+
+  useEffect(() => {
+    const sections = navItems
+      .map((item) => document.querySelector(item.href))
+      .filter(Boolean);
+
+    if (!("IntersectionObserver" in window) || !sections.length) {
+      return undefined;
+    }
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveHref(`#${entry.target.id}`);
+        }
+      });
+    }, { rootMargin: "-24% 0px -62%", threshold: 0 });
+
+    sections.forEach((section) => sectionObserver.observe(section));
+
+    return () => sectionObserver.disconnect();
+  }, []);
 
   return (
     <header className="site-header">
-      <nav className="nav-shell" aria-label="Primary navigation">
+      <nav className={`nav-shell${menuOpen ? " is-open" : ""}`} aria-label="Primary navigation">
         <button
           className="menu-toggle"
           type="button"
@@ -492,7 +624,16 @@ function Header() {
 
         <div className={`nav-links${menuOpen ? " is-open" : ""}`} id="site-menu">
           {navItems.map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+            <a
+              className={activeHref === item.href ? "is-active" : ""}
+              key={item.href}
+              href={item.href}
+              aria-current={activeHref === item.href ? "location" : undefined}
+              onClick={() => {
+                setActiveHref(item.href);
+                setMenuOpen(false);
+              }}
+            >
               {item.label}
             </a>
           ))}
@@ -502,7 +643,45 @@ function Header() {
   );
 }
 
-function ProfileCard() {
+const designPrinciples = [
+  { className: "is-experience", label: "用户体验", english: "User experience", icon: UserRound },
+  { className: "is-business", label: "商业价值", english: "Business value", icon: TrendingUp },
+  { className: "is-visual", label: "美术设计", english: "Visual design", icon: PenTool },
+];
+
+function DesignPhilosophy() {
+  return (
+    <section className="design-philosophy reveal-item" aria-labelledby="design-philosophy-title">
+      <p className="design-philosophy-label" id="design-philosophy-title">设计理念</p>
+
+      <div className="design-philosophy-visual" aria-label="用户体验、商业价值与美术设计相互平衡">
+        <svg className="design-philosophy-lines" viewBox="0 0 420 360" aria-hidden="true">
+          <path className="design-philosophy-triangle" d="M210 76 L88 278 L332 278 Z" />
+          <path className="design-philosophy-orbit" d="M70 226 C36 92 142 24 210 24 C306 24 382 104 362 228 C344 326 250 344 210 344 C132 344 62 310 58 250" />
+          <circle cx="210" cy="190" r="53" />
+        </svg>
+
+        {designPrinciples.map((principle) => {
+          const Icon = principle.icon;
+
+          return (
+            <article className={`design-principle-node ${principle.className}`} key={principle.label}>
+              <Icon aria-hidden="true" />
+              <strong>{principle.label}</strong>
+              <span>{principle.english}</span>
+            </article>
+          );
+        })}
+
+        <span className="design-philosophy-center" aria-hidden="true">
+          <Target />
+        </span>
+      </div>
+    </section>
+  );
+}
+
+function ProfileCard({ onOpenResume, resumeTriggerRef }) {
   return (
     <aside className="profile-card reveal-item" aria-label="Personal profile card">
       <div className="profile-card-head stagger-children">
@@ -542,10 +721,196 @@ function ProfileCard() {
       </div>
 
       <div className="profile-actions reveal-item">
-        <a className="profile-action primary" href="#capabilities">查看简历</a>
+        <button
+          className="profile-action primary"
+          type="button"
+          ref={resumeTriggerRef}
+          onClick={onOpenResume}
+        >
+          查看简历
+        </button>
         <a className="profile-action secondary" href="#contact">联系我 <span aria-hidden="true">↗</span></a>
       </div>
     </aside>
+  );
+}
+
+function ResumeModal({ isOpen, onClose, onViewWorkflow }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const focusableElements = dialogRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+
+      if (!focusableElements?.length) {
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    <div
+      className="resume-modal"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <article
+        className="resume-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resume-title"
+        aria-describedby="resume-about-copy"
+        ref={dialogRef}
+      >
+        <button
+          className="resume-close-button"
+          type="button"
+          aria-label="关闭简历"
+          onClick={onClose}
+          ref={closeButtonRef}
+        >
+          <X aria-hidden="true" />
+        </button>
+
+        <section className="resume-identity" aria-labelledby="resume-title">
+          <h2 className="resume-title" id="resume-title">
+            <span>UI /</span>
+            <span>VISUAL</span>
+            <span>DESIGNER</span>
+          </h2>
+
+          <div className="resume-name-block">
+            <p><strong>何臻亮</strong> / He Zhenliang</p>
+            <span>UI设计师 / 视觉设计师</span>
+          </div>
+
+          <div className="resume-details" aria-label="基础信息与联系方式">
+            {resumeDetails.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div className="resume-detail" key={item.label}>
+                  <Icon aria-hidden="true" />
+                  <p><span>{item.label}：</span>{item.value}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="resume-portrait-wrap">
+            <img src={resumePortrait} alt="何臻亮黄色背景个人照片" />
+          </div>
+        </section>
+
+        <div className="resume-content">
+          <section className="resume-section resume-about" aria-labelledby="resume-about-title">
+            <div className="resume-section-heading">
+              <h3 id="resume-about-title">About Me</h3>
+              <span>/ 关于我</span>
+            </div>
+            <p id="resume-about-copy">
+              你好，我是数字媒体技术专业准大四生，专注于 UI 设计、网页视觉与商业视觉。我尝试把设计表达、交互体验、前端实现与 AI 工具整合，让 AI 参与需求分析、方案探索、视觉设计和组件规范，并由我把控设计判断、用户体验与最终质量。
+            </p>
+          </section>
+
+          <section className="resume-section resume-skills" aria-labelledby="resume-skills-title">
+            <div className="resume-section-heading">
+              <h3 id="resume-skills-title">Skills</h3>
+              <span>/ 技能掌握</span>
+            </div>
+
+            <div className="resume-skill-list">
+              {resumeSkills.map((skill) => {
+                const Icon = skill.icon;
+
+                return (
+                  <div className="resume-skill" key={skill.label}>
+                    <span className="resume-skill-icon" aria-hidden="true"><Icon /></span>
+                    <p><strong>{skill.label}：</strong>{skill.value}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="resume-section resume-experience" aria-labelledby="resume-experience-title">
+            <div className="resume-section-heading">
+              <h3 id="resume-experience-title">Experience</h3>
+              <span>/ 工作经历</span>
+            </div>
+
+            <div className="resume-experience-loader" role="status" aria-live="polite">
+              <span className="resume-loader-icon" aria-hidden="true">
+                <LoaderCircle />
+              </span>
+              <div className="resume-loader-copy">
+                <strong>正在加载工作经历</strong>
+                <span>EXPERIENCE LOG · 持续更新中</span>
+              </div>
+              <span className="resume-loader-track" aria-hidden="true"><i /></span>
+            </div>
+          </section>
+
+          <div className="resume-actions">
+            <a className="resume-action resume-action-primary" href={getAppPath("/he-zhenliang-resume.pdf")} download="何臻亮-UI视觉设计师-简历.pdf">
+              <Download aria-hidden="true" />
+              下载简历 PDF
+            </a>
+            <button className="resume-action resume-action-secondary" type="button" onClick={onViewWorkflow}>
+              <Workflow aria-hidden="true" />
+              查看工作流
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
   );
 }
 
@@ -555,9 +920,13 @@ function CapabilitiesPanel() {
       <div className="capabilities-copy">
         <p className="capabilities-kicker">Capabilities / 02</p>
         <h2 id="capabilities-title">我的能力</h2>
-        <p>相比单纯使用 AI 出图，我更关注如何把 AI 变成设计生产力。我会根据项目需求设计工作流，让 AI 参与需求分析、方案探索、视觉设计、组件规范、前端开发等多个环节，而设计判断、用户体验和最终质量由我把控。因此，我不仅能够提高设计效率，也能保证作品具有一致性和可落地性。</p>
+        <ul className="capabilities-highlights" aria-label="核心能力">
+          {capabilityHighlights.map((highlight) => (
+            <li key={highlight}>{highlight}</li>
+          ))}
+        </ul>
         <span aria-hidden="true" />
-        <p>AI 是提高效率的工具，设计判断与最终品质由我负责。</p>
+        <p>不同任务使用不同工作流，设计判断与最终品质始终由我负责。</p>
       </div>
 
       <div className="capabilities-card-grid">
@@ -597,7 +966,7 @@ function CapabilitiesPanel() {
 
 function ExperienceRoute() {
   return (
-    <div className="experience-route reveal-item" aria-label="Experience route">
+    <div className="experience-route reveal-item" id="experience" aria-label="Experience route">
       <div className="experience-heading reveal-item">
         <p>Experience route</p>
         <span>2023 - Now</span>
@@ -623,10 +992,10 @@ function ExperienceRoute() {
   );
 }
 
-function Hero() {
+function Hero({ onOpenResume, resumeTriggerRef }) {
   return (
     <section className="hero section-reveal" aria-labelledby="hero-title">
-      <div className="hero-content">
+      <div className="hero-content" id="profile">
         <div className="hero-copy stagger-children">
           <p className="hero-intro">Hi I'm</p>
           <p className="eyebrow">Personal portfolio</p>
@@ -638,7 +1007,10 @@ function Hero() {
           <p className="hero-specialty">我把 UI、海报、品牌视觉和前端实现整理成可浏览的作品系统，让设计从图像延展到真实页面。</p>
         </div>
 
-        <ProfileCard />
+        <div className="hero-profile-grid">
+          <DesignPhilosophy />
+          <ProfileCard onOpenResume={onOpenResume} resumeTriggerRef={resumeTriggerRef} />
+        </div>
       </div>
 
       <CapabilitiesPanel />
@@ -864,9 +1236,9 @@ function WorkSection({
   );
 }
 
-function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works }) {
+function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works, pageClassName = "" }) {
   return (
-    <main className="poster-page" id="top">
+    <main className={`poster-page${pageClassName ? ` ${pageClassName}` : ""}`} id="top">
       <button className="back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
       <section className="poster-hero section-reveal is-visible" aria-labelledby="poster-title">
         <p className="eyebrow">{eyebrow}</p>
@@ -984,17 +1356,17 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode 
 
 function TeaProjectPage({ onBackToWork }) {
   return (
-    <main className="case-page" id="top">
-      <button className="back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
+    <main className="case-page tea-case-page" id="top">
+      <button className="back-link tea-case-back-link reveal-item" type="button" onClick={onBackToWork}>返回作品集</button>
 
-      <section className="case-hero section-reveal is-visible" aria-labelledby="tea-project-title">
+      <section className="case-hero tea-case-hero section-reveal is-visible" aria-labelledby="tea-project-title">
         <div className="case-hero-copy reveal-item">
           <p className="eyebrow">Game UI case / 01</p>
           <h1 id="tea-project-title">客官请喝茶</h1>
-          <p>这是一个用于展示游戏 UI 界面设计能力的项目页。后续会补充真实项目图、页面流程和关键设计说明，让面试官能快速理解我做了什么、为什么这样做，以及最终呈现的效果。</p>
+          <p>从游戏 GDD、玩法与信息架构出发，完成一套可持续迭代的东方茶馆经营游戏 UI。</p>
         </div>
 
-        <div className="case-hero-panel reveal-item" aria-label="Project summary">
+        <div className="case-hero-panel tea-case-summary reveal-item" aria-label="Project summary">
           {teaProjectFacts.map((fact) => (
             <div className="case-fact" key={fact.label}>
               <span>{fact.label}</span>
@@ -1010,28 +1382,28 @@ function TeaProjectPage({ onBackToWork }) {
         </div>
       </section>
 
-      <section className="case-section" aria-labelledby="tea-contribution-title">
-        <div className="case-section-head reveal-item">
-          <p className="eyebrow">My work</p>
-          <h2 id="tea-contribution-title">我在项目中负责的部分</h2>
+      <section className="tea-reflection-section reveal-item" aria-labelledby="tea-reflection-title">
+        <div className="tea-reflection-heading">
+          <p className="eyebrow">Project reflection</p>
+          <h2 id="tea-reflection-title">从 GDD 到一致的游戏 UI</h2>
+          <p>
+            本项目完整经历需求分析、玩法确定、信息架构、创新机制与 UI 设计交付。我不仅完成了界面产出，也通过解决 AIGC 风格一致性问题，建立了一套更稳定、可控制的设计工作流。
+          </p>
         </div>
 
-        <div className="case-card-grid">
-          {teaProjectContributions.map((item, index) => (
-            <article
-              className="case-card reveal-item"
-              key={item.title}
-              style={{ "--reveal-delay": `${index * 90}ms` }}
-            >
+        <ol className="tea-process-list" aria-label="项目设计流程">
+          {teaProjectProcess.map((step, index) => (
+            <li key={step.title}>
               <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
+              <strong>{step.title}</strong>
+              <p>{step.body}</p>
+            </li>
           ))}
-        </div>
+        </ol>
+
       </section>
 
-      <section className="case-screen-section reveal-item" aria-labelledby="tea-screens-title">
+      <section className="case-screen-section tea-screen-section reveal-item" aria-labelledby="tea-screens-title">
         <div className="case-section-head">
           <p className="eyebrow">Game UI screens</p>
           <h2 id="tea-screens-title">项目界面展示</h2>
@@ -1044,6 +1416,27 @@ function TeaProjectPage({ onBackToWork }) {
           progressId="tea-gallery-progress"
           aspectRatio="941 / 1672"
         />
+      </section>
+
+      <section className="tea-outcomes-section reveal-item" aria-labelledby="tea-outcomes-title">
+        <div className="tea-outcomes-heading">
+          <p className="eyebrow">Problem solving</p>
+          <h2 id="tea-outcomes-title">我如何把 AI 产出变成可交付的设计</h2>
+          <p>比最终画面更重要的是，我在项目中完成了问题判断、方法验证与工作流沉淀。</p>
+        </div>
+
+        <div className="tea-learning-grid">
+          {teaProjectLearnings.map((learning, index) => (
+            <article key={learning.label}>
+              <div className="tea-learning-meta">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <p>{learning.label}</p>
+              </div>
+              <h3>{learning.title}</h3>
+              <div className="tea-learning-body">{learning.body}</div>
+            </article>
+          ))}
+        </div>
       </section>
     </main>
   );
@@ -1071,6 +1464,8 @@ function YueErTingProjectPage({ onBackToWork }) {
       />
 
       <AssetGuardProjectSection />
+      <EmotionPetProjectSection />
+      <RedEnvelopeProjectSection />
     </main>
   );
 }
@@ -1091,6 +1486,47 @@ function AssetGuardProjectSection() {
         progressId="assetguard-gallery-progress"
         aspectRatio="1280 / 1024"
         displayMode="desktop"
+      />
+    </section>
+  );
+}
+
+function EmotionPetProjectSection() {
+  return (
+    <section className="emotion-pet-project-section section-reveal" aria-labelledby="emotion-pet-title">
+      <div className="ui-case-intro emotion-pet-case-intro section-reveal is-visible">
+        <h1 id="emotion-pet-title" className="reveal-item is-visible">情绪宠物</h1>
+        <p className="reveal-item is-visible">
+          通过影像观察与情绪分析生成专属数字宠物，把日常状态记录转化为温和、可持续的陪伴体验。
+        </p>
+      </div>
+
+      <UiScreenGallery
+        screens={emotionPetScreens}
+        label="情绪宠物 UI 界面展示"
+        progressId="emotion-pet-gallery-progress"
+        aspectRatio="390 / 932"
+      />
+    </section>
+  );
+}
+
+function RedEnvelopeProjectSection() {
+  return (
+    <section className="red-envelope-project-section section-reveal" aria-labelledby="red-envelope-title">
+      <div className="ui-case-intro red-envelope-case-intro section-reveal is-visible">
+        <h1 id="red-envelope-title" className="reveal-item is-visible">红包活动界面</h1>
+        <p className="reveal-item is-visible">
+          围绕每日签到、限时抢红包、抽取机会与提现流程，设计一套清晰、有节奏的活动激励体验。
+        </p>
+      </div>
+
+      <UiScreenGallery
+        screens={redEnvelopeScreens}
+        label="红包活动 UI 界面展示"
+        progressId="red-envelope-gallery-progress"
+        aspectRatio="390 / 1057"
+        displayMode="compact-mobile"
       />
     </section>
   );
@@ -1200,18 +1636,54 @@ function AboutSection() {
   );
 }
 
-function ProcessSection() {
-  return (
-    <section className="section testimonial-section section-reveal" id="process" aria-labelledby="process-title">
-      <div className="testimonial-panel reveal-item">
-        <p className="eyebrow">Process</p>
-        <h2 id="process-title">From visual idea to working interface.</h2>
-      </div>
-    </section>
-  );
+async function copyTextToClipboard(value) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+
+  if (!copied) {
+    throw new Error("Clipboard copy failed");
+  }
 }
 
 function ContactSection() {
+  const [wechatCopyStatus, setWechatCopyStatus] = useState("idle");
+  const copyResetTimerRef = useRef(null);
+
+  useEffect(() => () => {
+    if (copyResetTimerRef.current) {
+      window.clearTimeout(copyResetTimerRef.current);
+    }
+  }, []);
+
+  async function handleWechatCopy(value) {
+    try {
+      await copyTextToClipboard(value);
+      setWechatCopyStatus("copied");
+    } catch {
+      setWechatCopyStatus("failed");
+    }
+
+    if (copyResetTimerRef.current) {
+      window.clearTimeout(copyResetTimerRef.current);
+    }
+
+    copyResetTimerRef.current = window.setTimeout(() => {
+      setWechatCopyStatus("idle");
+    }, 2200);
+  }
+
   return (
     <footer className="contact-section section-reveal" id="contact">
       <div className="contact-copy reveal-item">
@@ -1221,8 +1693,23 @@ function ContactSection() {
       </div>
 
       <div className="contact-actions reveal-item" aria-label="Contact links">
-        {contactLinks.map((link) => (
+        {contactLinks.map((link) => link.type === "wechat" ? (
+          <button
+            className={wechatCopyStatus === "copied" ? "contact-link is-copied" : "contact-link"}
+            key={link.label}
+            type="button"
+            onClick={() => handleWechatCopy(link.value)}
+            aria-label={`复制微信号 ${link.value}`}
+          >
+            {wechatCopyStatus === "copied"
+              ? "已复制微信号 ✓"
+              : wechatCopyStatus === "failed"
+                ? `复制失败，请手动复制 ${link.value}`
+                : link.label}
+          </button>
+        ) : (
           <a
+            className="contact-link"
             key={link.label}
             href={link.href}
             target={link.href.startsWith("http") ? "_blank" : undefined}
@@ -1241,6 +1728,8 @@ function ContactSection() {
 export default function App() {
   useScrollReveal();
   const { pagePath, navigate } = usePagePath();
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const resumeTriggerRef = useRef(null);
   const isPhotographyPage = pagePath === "/works/poster";
   const isPosterDesignPage = pagePath === "/works/poster-design";
   const isTeaProjectPage = pagePath === "/works/tea-ui";
@@ -1255,6 +1744,23 @@ export default function App() {
   function returnToWorkSection() {
     navigate("/", "work");
   }
+
+  const openResume = useCallback(() => {
+    setResumeOpen(true);
+  }, []);
+
+  const closeResume = useCallback(() => {
+    setResumeOpen(false);
+    requestAnimationFrame(() => resumeTriggerRef.current?.focus());
+  }, []);
+
+  const viewWorkflow = useCallback(() => {
+    setResumeOpen(false);
+    window.history.pushState({}, "", `${getAppPath("/")}#capabilities`);
+    requestAnimationFrame(() => {
+      document.getElementById("capabilities")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   return (
     <>
@@ -1274,6 +1780,7 @@ export default function App() {
           title="我的海报作品"
           ariaLabel="Poster design works archive"
           works={posterDesignWorks}
+          pageClassName="poster-design-page"
         />
       ) : isTeaProjectPage ? (
         <TeaProjectPage onBackToWork={returnToWorkSection} />
@@ -1282,8 +1789,8 @@ export default function App() {
       ) : isQianshanPage ? (
         <QianshanProjectPage onBackToWork={returnToWorkSection} />
       ) : (
-        <main id="top">
-          <Hero />
+        <main className="home-page" id="top">
+          <Hero onOpenResume={openResume} resumeTriggerRef={resumeTriggerRef} />
           <WorkSection
             onOpenPhotography={() => navigate("/works/poster")}
             onOpenPosterDesign={() => navigate("/works/poster-design")}
@@ -1292,10 +1799,10 @@ export default function App() {
             onOpenBrandProject={() => navigate("/works/qianshan-farm")}
           />
           <AboutSection />
-          <ProcessSection />
         </main>
       )}
       {!isDetailPage ? <ContactSection /> : null}
+      <ResumeModal isOpen={resumeOpen} onClose={closeResume} onViewWorkflow={viewWorkflow} />
     </>
   );
 }
