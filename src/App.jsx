@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   BookOpen,
   Box,
@@ -110,9 +111,9 @@ import qianshanApplicationMug from "../assets/qianshan-ip/application-mug.png";
 
 const navItems = [
   { href: "#profile", label: "关于我" },
-  { href: "#capabilities", label: "我的能力" },
-  { href: "#experience", label: "经历" },
   { href: "#work", label: "作品集" },
+  { href: "#experience", label: "经历" },
+  { href: "#capabilities", label: "我的能力" },
   { href: "#contact", label: "联系我" },
 ];
 
@@ -120,7 +121,7 @@ const appBasePath = import.meta.env.BASE_URL === "/"
   ? ""
   : import.meta.env.BASE_URL.replace(/\/$/, "");
 
-const portfolioUrl = "https://3352873770-rgb.github.io/le0n-portfolio/#about";
+const portfolioUrl = "https://3352873770-rgb.github.io/le0n-portfolio/#profile";
 
 function getCurrentPagePath() {
   const { pathname } = window.location;
@@ -316,23 +317,6 @@ const teaProjectLearnings = [
   },
 ];
 
-const capabilities = [
-  {
-    title: "拥抱 AI 工具能力",
-    body: [
-      "毫无疑问，AIGC 的发展已经成指数性发展，近几年来的 AI 发展速度远远超过我们的想象，许多人都在担心自己会被 AI 代替，确实如此，AI 的能力确实很强大。",
-      "与其担心被替代，不如抓住风口学习如何使用 AI。此时，你跟别人的差距就在于对 AI 的熟练度，它更像是对综合能力的考验，包括项目思考能力、问题拆分能力与管理能力。",
-    ],
-  },
-  {
-    title: "让 AI 成为设计伙伴",
-    body: [
-      "我始终保持对新技术的关注，尤其是 AI 在设计领域的应用。我更希望把它作为自己的设计伙伴，而不是简单的工具，让它参与创意、优化流程，把更多时间留给思考和设计本身。",
-      "我喜欢研究新的工具和设计方法，也愿意花时间去探索更高效的工作流程。AI 对我来说不是用来替代设计，而是帮助我把重复性的工作做得更快，把更多精力放在创意、细节和用户体验上。我希望不断学习，把设计和技术结合起来，做出真正能够解决问题的作品。",
-    ],
-  },
-];
-
 const contactLinks = [
   { type: "wechat", label: "VX:-LiA_Ang", value: "-LiA_Ang" },
   { href: "https://github.com/", label: "GitHub" },
@@ -363,7 +347,7 @@ const resumeDetails = [
   { icon: MapPin, label: "所在地", value: "Guangzhou, China" },
   { icon: MessageCircle, label: "微信", value: "-LiA_Ang" },
   { icon: Phone, label: "tel", value: "17820304443" },
-  { icon: Link2, label: "作品集", value: "3352873770-rgb.github.io/le0n-portfolio/#about", href: portfolioUrl },
+  { icon: Link2, label: "作品集", value: "3352873770-rgb.github.io/le0n-portfolio/#profile", href: portfolioUrl },
 ];
 
 const resumeSkills = [
@@ -527,6 +511,7 @@ function useScrollReveal() {
     });
 
     const revealItems = document.querySelectorAll(revealSelector);
+    const observedItems = new WeakSet();
 
     if (!("IntersectionObserver" in window)) {
       revealItems.forEach((item) => item.classList.add("is-visible"));
@@ -545,12 +530,20 @@ function useScrollReveal() {
     }, { threshold: 0.16 });
 
     function observeRevealItem(item) {
-      if (!(item instanceof Element) || item.dataset.revealObserved === "true") {
+      if (!(item instanceof Element) || observedItems.has(item)) {
         return;
       }
 
-      item.dataset.revealObserved = "true";
+      observedItems.add(item);
       revealObserver.observe(item);
+
+      const rect = item.getBoundingClientRect();
+      const isInInitialViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (isInInitialViewport) {
+        item.classList.add("is-visible");
+        revealObserver.unobserve(item);
+      }
     }
 
     revealItems.forEach(observeRevealItem);
@@ -1026,6 +1019,14 @@ function Hero({ onOpenResume, resumeTriggerRef }) {
 function usePagePath() {
   const [pagePath, setPagePath] = useState(getCurrentPagePath);
 
+  function scrollToTopImmediately() {
+    const rootElement = document.documentElement;
+    const previousScrollBehavior = rootElement.style.scrollBehavior;
+    rootElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    rootElement.style.scrollBehavior = previousScrollBehavior;
+  }
+
   useEffect(() => {
     function handlePopState() {
       setPagePath(getCurrentPagePath());
@@ -1051,6 +1052,11 @@ function usePagePath() {
     }
 
     window.history.pushState({}, "", `${getAppPath(path)}${hash}`);
+
+    if (!targetId) {
+      scrollToTopImmediately();
+    }
+
     setPagePath(path);
 
     if (targetId) {
@@ -1059,8 +1065,6 @@ function usePagePath() {
           document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
@@ -1105,7 +1109,10 @@ function WorkSection({
   onOpenBrandProject,
 }) {
   const workTrackRef = useRef(null);
+  const workSceneRef = useRef(null);
   const scrollFrameRef = useRef(null);
+  const sceneFrameRef = useRef(null);
+  const reducedMotionRef = useRef(false);
   const [scrollMetrics, setScrollMetrics] = useState({
     progress: 0,
     thumbSize: 100,
@@ -1146,24 +1153,70 @@ function WorkSection({
     });
   }
 
+  function syncWorkScene() {
+    if (sceneFrameRef.current) {
+      return;
+    }
+
+    sceneFrameRef.current = window.requestAnimationFrame(() => {
+      const scene = workSceneRef.current;
+      const track = workTrackRef.current;
+
+      if (scene && track && !reducedMotionRef.current) {
+        const scrollRange = Math.max(track.scrollWidth - track.clientWidth, 0);
+        const sceneRect = scene.getBoundingClientRect();
+        const sceneTop = window.scrollY + sceneRect.top;
+        const scrollDistance = Math.max(scene.offsetHeight - window.innerHeight, 1);
+        const progress = Math.min(Math.max((window.scrollY - sceneTop) / scrollDistance, 0), 1);
+
+        track.scrollLeft = scrollRange * progress;
+      }
+
+      sceneFrameRef.current = null;
+    });
+  }
+
   useEffect(() => {
     const track = workTrackRef.current;
+    const scene = workSceneRef.current;
 
-    if (!track) {
+    if (!track || !scene) {
       return undefined;
     }
 
-    const resizeObserver = new ResizeObserver(syncWorkScroll);
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reducedMotionRef.current = motionPreference.matches;
+    const updateWorkScene = () => {
+      const scrollRange = Math.max(track.scrollWidth - track.clientWidth, 0);
+      scene.style.setProperty("--work-scroll-distance", `${scrollRange}px`);
+      syncWorkScroll();
+      syncWorkScene();
+    };
+    const handleMotionPreference = () => {
+      reducedMotionRef.current = motionPreference.matches;
+      updateWorkScene();
+    };
+    const resizeObserver = new ResizeObserver(updateWorkScene);
     resizeObserver.observe(track);
-    window.addEventListener("resize", syncWorkScroll);
-    syncWorkScroll();
+    window.addEventListener("resize", updateWorkScene);
+    window.addEventListener("scroll", syncWorkScene, { passive: true });
+    motionPreference.addEventListener("change", handleMotionPreference);
+    updateWorkScene();
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener("resize", syncWorkScroll);
+      window.removeEventListener("resize", updateWorkScene);
+      window.removeEventListener("scroll", syncWorkScene);
+      motionPreference.removeEventListener("change", handleMotionPreference);
 
       if (scrollFrameRef.current) {
         window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
+      }
+
+      if (sceneFrameRef.current) {
+        window.cancelAnimationFrame(sceneFrameRef.current);
+        sceneFrameRef.current = null;
       }
     };
   }, []);
@@ -1177,6 +1230,14 @@ function WorkSection({
     }
 
     const scrollRange = Math.max(track.scrollWidth - track.clientWidth, 0);
+    const scene = workSceneRef.current;
+
+    if (scene && !reducedMotionRef.current) {
+      const sceneTop = window.scrollY + scene.getBoundingClientRect().top;
+      const scrollDistance = Math.max(scene.offsetHeight - window.innerHeight, 0);
+      window.scrollTo({ top: sceneTop + scrollDistance * (progress / 100), behavior: "auto" });
+    }
+
     track.scrollTo({ left: scrollRange * (progress / 100), behavior: "auto" });
     setScrollMetrics((current) => ({ ...current, progress }));
   }
@@ -1185,55 +1246,54 @@ function WorkSection({
     <section className="section work-section section-reveal" id="work" aria-labelledby="work-title">
       <div className="section-heading reveal-item">
         <h2 id="work-title">个人作品集</h2>
-        <p>作品先按方向进入：游戏 UI、App UI、品牌视觉设计、海报作品与摄影作品。每个分类都会延展成独立页面和完整项目详情。</p>
       </div>
 
-      <div className="work-carousel reveal-item">
-        <div
-          className="work-showcase"
-          ref={workTrackRef}
-          onScroll={syncWorkScroll}
-          tabIndex="0"
-          aria-label="可横向浏览的作品模块"
-        >
-          {workCategories.map((work, index) => (
-            <WorkStrip
-              key={work.id}
-              work={work}
-              style={{ "--reveal-delay": `${index * 90}ms` }}
-              onOpen={work.id === "frontend"
-                ? onOpenTeaProject
-                : work.id === "ui"
-                  ? onOpenUiProject
-                  : work.id === "posterDesign"
-                    ? onOpenPosterDesign
-                    : work.id === "poster"
-                      ? onOpenPhotography
-                      : work.id === "brand"
-                        ? onOpenBrandProject
-                        : undefined}
-            />
-          ))}
-        </div>
+      <div className="work-scroll-scene" ref={workSceneRef}>
+        <div className="work-scroll-sticky">
+          <div className="work-carousel reveal-item">
+            <div
+              className="work-showcase"
+              ref={workTrackRef}
+              onScroll={syncWorkScroll}
+              tabIndex="0"
+              aria-label="向下滚动或横向滑动浏览作品分类"
+            >
+              {workCategories.map((work, index) => (
+                <WorkStrip
+                  key={work.id}
+                  work={work}
+                  style={{ "--reveal-delay": `${index * 90}ms`, zIndex: index + 1 }}
+                  onOpen={work.id === "frontend"
+                    ? onOpenTeaProject
+                    : work.id === "ui"
+                      ? onOpenUiProject
+                      : work.id === "posterDesign"
+                        ? onOpenPosterDesign
+                        : work.id === "poster"
+                          ? onOpenPhotography
+                          : work.id === "brand"
+                            ? onOpenBrandProject
+                            : undefined}
+                />
+              ))}
+            </div>
 
-        <div className={`work-scroll-control${scrollMetrics.hasOverflow ? " is-active" : ""}`}>
-          <div className="work-scroll-meta" aria-hidden="true">
-            <span>{scrollMetrics.hasOverflow ? "拖动浏览更多作品" : "当前展示全部作品"}</span>
-            <span>{String(workCategories.length).padStart(2, "0")} PROJECTS</span>
+            <div className={`work-scroll-control${scrollMetrics.hasOverflow ? " is-active" : ""}`}>
+              <label className="sr-only" htmlFor="work-scroll-progress">作品模块浏览进度</label>
+              <input
+                id="work-scroll-progress"
+                type="range"
+                min="0"
+                max="100"
+                step="0.1"
+                value={scrollMetrics.progress}
+                disabled={!scrollMetrics.hasOverflow}
+                onInput={handleWorkProgress}
+                style={{ "--work-thumb-size": `${scrollMetrics.thumbSize}%` }}
+                aria-valuetext={`已浏览 ${Math.round(scrollMetrics.progress)}%`}
+              />
+            </div>
           </div>
-          <label className="sr-only" htmlFor="work-scroll-progress">作品模块浏览进度</label>
-          <input
-            id="work-scroll-progress"
-            type="range"
-            min="0"
-            max="100"
-            step="0.1"
-            value={scrollMetrics.progress}
-            disabled={!scrollMetrics.hasOverflow}
-            onInput={handleWorkProgress}
-            style={{ "--work-thumb-size": `${scrollMetrics.thumbSize}%` }}
-            aria-valuetext={`已浏览 ${Math.round(scrollMetrics.progress)}%`}
-          />
         </div>
       </div>
     </section>
@@ -1280,7 +1340,7 @@ function VisualArchivePage({ onBackToWork, eyebrow, title, ariaLabel, works, pag
   );
 }
 
-function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode = "mobile" }) {
+function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode = "mobile", revealItems = true }) {
   const galleryRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -1332,9 +1392,9 @@ function UiScreenGallery({ screens, label, progressId, aspectRatio, displayMode 
       >
         {screens.map((screen, index) => (
           <figure
-            className="ui-screen-card reveal-item"
+            className={`ui-screen-card${revealItems ? " reveal-item" : ""}`}
             key={screen.id}
-            style={{ "--reveal-delay": `${Math.min(index * 55, 330)}ms` }}
+            style={revealItems ? { "--reveal-delay": `${Math.min(index * 55, 330)}ms` } : undefined}
           >
             <img src={screen.src} alt={screen.alt} loading={index > 4 ? "lazy" : "eager"} />
           </figure>
@@ -1446,16 +1506,336 @@ function TeaProjectPage({ onBackToWork }) {
   );
 }
 
+function YueErTingLetterInteraction() {
+  const triggerRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const closeTimerRef = useRef(null);
+  const attentionStartTimerRef = useRef(null);
+  const attentionEndTimerRef = useRef(null);
+  const hasPlayedAttentionRef = useRef(false);
+  const [isAttentionActive, setIsAttentionActive] = useState(false);
+  const [letterState, setLetterState] = useState({
+    isOpen: false,
+    isClosing: false,
+    envelopeLeft: 0,
+    envelopeTop: 0,
+    envelopeWidth: 0,
+    envelopeHeight: 0,
+    paperLeft: 0,
+    paperTop: 0,
+    paperWidth: 0,
+    paperHeight: 0,
+    flightExitY: 0,
+  });
+
+  const openLetter = useCallback(() => {
+    setIsAttentionActive(false);
+    const triggerBounds = triggerRef.current?.getBoundingClientRect();
+    const envelopeLeft = triggerBounds?.left ?? 0;
+    const envelopeTop = triggerBounds?.top ?? 0;
+    const envelopeWidth = triggerBounds?.width ?? 0;
+    const envelopeHeight = triggerBounds?.height ?? 0;
+    const paperLeft = envelopeLeft + (envelopeWidth * (5 / 140));
+    const paperTop = envelopeTop + (envelopeHeight * (3 / 136));
+    const paperWidth = envelopeWidth * (130 / 140);
+    const paperHeight = envelopeHeight * (103 / 136);
+
+    setLetterState({
+      isOpen: true,
+      isClosing: false,
+      envelopeLeft,
+      envelopeTop,
+      envelopeWidth,
+      envelopeHeight,
+      paperLeft,
+      paperTop,
+      paperWidth,
+      paperHeight,
+      flightExitY: -(paperTop + paperHeight + 28),
+    });
+  }, []);
+
+  useEffect(() => {
+    const triggerElement = triggerRef.current;
+
+    if (!triggerElement || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    const playAttention = () => {
+      if (hasPlayedAttentionRef.current) {
+        return;
+      }
+
+      hasPlayedAttentionRef.current = true;
+      attentionStartTimerRef.current = window.setTimeout(() => {
+        setIsAttentionActive(true);
+        attentionEndTimerRef.current = window.setTimeout(() => {
+          setIsAttentionActive(false);
+        }, 740);
+      }, 220);
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
+        playAttention();
+        observer.disconnect();
+      }
+    }, { threshold: [0.65] });
+
+    observer.observe(triggerElement);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(attentionStartTimerRef.current);
+      window.clearTimeout(attentionEndTimerRef.current);
+      hasPlayedAttentionRef.current = false;
+    };
+  }, []);
+
+  const closeLetter = useCallback(() => {
+    setLetterState((currentState) => ({ ...currentState, isClosing: true }));
+    window.clearTimeout(closeTimerRef.current);
+    const closeDuration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 600;
+    closeTimerRef.current = window.setTimeout(() => {
+      setLetterState((currentState) => ({ ...currentState, isOpen: false, isClosing: false }));
+      triggerRef.current?.focus();
+    }, closeDuration);
+  }, []);
+
+  useEffect(() => {
+    if (!letterState.isOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape" && !letterState.isClosing) {
+        event.preventDefault();
+        closeLetter();
+        return;
+      }
+
+      if (event.key === "Tab") {
+        event.preventDefault();
+        closeButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [closeLetter, letterState.isClosing, letterState.isOpen]);
+
+  useEffect(() => () => {
+    window.clearTimeout(closeTimerRef.current);
+    window.clearTimeout(attentionStartTimerRef.current);
+    window.clearTimeout(attentionEndTimerRef.current);
+  }, []);
+
+  return (
+    <>
+      <button
+        className={`yue-letter-trigger${isAttentionActive ? " is-attention" : ""}${letterState.isOpen ? " is-open" : ""}`}
+        type="button"
+        aria-label="打开悦耳听设计札记"
+        aria-expanded={letterState.isOpen}
+        onClick={openLetter}
+        ref={triggerRef}
+      >
+        <svg className="yue-envelope" viewBox="0 0 140 136" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <filter id="yue-paper-shadow" x="-20%" y="-20%" width="140%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#6f7280" floodOpacity="0.11" />
+            </filter>
+            <filter id="yue-envelope-shadow" x="-20%" y="-20%" width="140%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#747782" floodOpacity="0.14" />
+            </filter>
+          </defs>
+
+          <g className="yue-envelope-paper" filter="url(#yue-paper-shadow)">
+            <path d="M5 3h130v103H5z" fill="#fffdfd" />
+            <path d="M20 25h100" stroke="#ddd5e0" strokeWidth="4" strokeLinecap="round" />
+            <path d="M32 42h76" stroke="#ddd5e0" strokeWidth="4" strokeLinecap="round" />
+          </g>
+
+          <g className="yue-envelope-body" filter="url(#yue-envelope-shadow)">
+            <path d="M4 62 68 92l64-30v68H4z" fill="#e9e3ef" />
+            <path d="m4 62 64 30-64 38z" fill="#dcd8e9" />
+            <path d="m132 62-64 30 64 38z" fill="#eee5ec" />
+            <path d="m4 130 64-42 64 42z" fill="#f6eff3" />
+          </g>
+
+          <g className="yue-envelope-cues" fill="none" stroke="#9f96ff" strokeWidth="4" strokeLinecap="round">
+            <path d="M114 1v9" />
+            <path d="m133 8-7 7" />
+            <path d="M130 26h8" />
+          </g>
+        </svg>
+      </button>
+
+      {letterState.isOpen ? createPortal((
+        <div
+          className={`yue-letter-overlay${letterState.isClosing ? " is-closing" : ""}`}
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !letterState.isClosing) {
+              closeLetter();
+            }
+          }}
+        >
+          <svg
+            className="yue-letter-origin-envelope"
+            viewBox="0 0 140 136"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            style={{
+              "--envelope-left": `${letterState.envelopeLeft}px`,
+              "--envelope-top": `${letterState.envelopeTop}px`,
+              "--envelope-width": `${letterState.envelopeWidth}px`,
+              "--envelope-height": `${letterState.envelopeHeight}px`,
+            }}
+          >
+            <g>
+              <path d="M4 62 68 92l64-30v68H4z" fill="#e9e3ef" />
+              <path d="m4 62 64 30-64 38z" fill="#dcd8e9" />
+              <path d="m132 62-64 30 64 38z" fill="#eee5ec" />
+              <path d="m4 130 64-42 64 42z" fill="#f6eff3" />
+            </g>
+            <g fill="none" stroke="#9f96ff" strokeWidth="4" strokeLinecap="round">
+              <path d="M114 1v9" />
+              <path d="m133 8-7 7" />
+              <path d="M130 26h8" />
+            </g>
+          </svg>
+
+          <span
+            className="yue-letter-flight-sheet"
+            aria-hidden="true"
+            style={{
+              "--paper-left": `${letterState.paperLeft}px`,
+              "--paper-top": `${letterState.paperTop}px`,
+              "--paper-width": `${letterState.paperWidth}px`,
+              "--paper-height": `${letterState.paperHeight}px`,
+              "--paper-exit-y": `${letterState.flightExitY}px`,
+            }}
+          >
+            <i />
+            <i />
+          </span>
+
+          <article
+            className="yue-reading-letter"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="yue-letter-title"
+            onClick={(event) => {
+              if (event.target === event.currentTarget && !letterState.isClosing) {
+                closeLetter();
+              }
+            }}
+          >
+            <button
+              className="yue-letter-close"
+              type="button"
+              aria-label="收起设计札记"
+              onClick={closeLetter}
+              ref={closeButtonRef}
+            >
+              <X aria-hidden="true" />
+            </button>
+            <h2 id="yue-letter-title">我的设计思路</h2>
+            <div className="yue-letter-rule" aria-hidden="true" />
+            <div className="yue-thinking-outline">
+              <section>
+                <p className="yue-thinking-label"><span>01</span> 项目背景</p>
+                <p>
+                  我希望为国内年轻用户设计一款音乐移动应用，在满足基础浏览与播放需求的同时，通过更简洁的交互和更有情绪感的视觉，建立轻松、沉浸的听觉体验。
+                </p>
+                <ul className="yue-thinking-points">
+                  <li>面向国内年轻用户的使用习惯</li>
+                  <li>围绕音乐浏览与播放建立核心体验</li>
+                  <li>用视觉情绪塑造轻松的产品气质</li>
+                </ul>
+              </section>
+              <section>
+                <p className="yue-thinking-label"><span>02</span> 我发现的问题</p>
+                <p>
+                  在观察 QQ 音乐、酷狗音乐与网易云音乐时，我发现成熟产品通常承载了大量分类、社区与服务入口。它们丰富了产品生态，也让部分低频功能持续占用注意力，增加了寻找内容与理解页面的成本。
+                </p>
+                <ul className="yue-thinking-points">
+                  <li>入口过多，播放场景不够聚焦</li>
+                  <li>信息层级复杂，内容路径偏深</li>
+                  <li>社交信息持续争夺用户注意力</li>
+                </ul>
+              </section>
+              <section>
+                <p className="yue-thinking-label"><span>03</span> 设计目标</p>
+                <p>
+                  我反复研究并打磨 Apple Music 与 Spotify 的界面，从视觉秩序、沉浸体验和推荐方式中提取有效方法，再结合国内用户习惯重新组织信息，而不是停留在表面模仿。
+                </p>
+                <ul className="yue-thinking-points">
+                  <li>Apple Music：视觉统一与沉浸体验</li>
+                  <li>Spotify：推荐效率与内容发现</li>
+                  <li>我的方向：参考成熟经验，再完成本地化重组</li>
+                </ul>
+              </section>
+              <section>
+                <p className="yue-thinking-label"><span>04</span> 核心决策</p>
+                <p>
+                  Apple Music 的视觉统一与沉浸感值得借鉴，但部分信息层级和操作路径对首次使用者存在学习成本。因此，我将热门与高频功能放到更容易被看见、被触达的位置。
+                </p>
+                <ul className="yue-thinking-points">
+                  <li>高频功能前置，降低首次查找成本</li>
+                  <li>缩短播放、搜索与内容发现路径</li>
+                  <li>保留视觉统一，不牺牲导航效率</li>
+                </ul>
+              </section>
+              <section>
+                <p className="yue-thinking-label"><span>05</span> 反思与思考</p>
+                <p>
+                  这是我第一次完整完成一套 UI 项目。我从字体层级、安全区域、图标尺寸和间距规范开始，经历参考、优化与反复打磨，也逐渐理解老师所说的“设计不只是好看”。
+                </p>
+                <ul className="yue-thinking-points">
+                  <li>视觉表达：建立产品气质与视觉秩序</li>
+                  <li>用户体验：让信息与操作更容易理解</li>
+                  <li>商业价值：让设计回应真实产品目标</li>
+                </ul>
+                <p className="yue-thinking-next">
+                  这次实践让我开始理解三者之间相互牵制、持续平衡的关系，也推动我从制作界面走向更深入的设计思考。
+                </p>
+              </section>
+            </div>
+            <footer>
+              <span>LE0N</span>
+              <span>YUEERTING / DESIGN NOTE</span>
+            </footer>
+          </article>
+        </div>
+      ), document.body) : null}
+    </>
+  );
+}
+
 function YueErTingProjectPage({ onBackToWork }) {
   return (
     <main className="ui-case-page" id="top">
-      <button className="back-link ui-case-back-link reveal-item" type="button" onClick={onBackToWork}>
+      <button className="back-link ui-case-back-link" type="button" onClick={onBackToWork}>
         返回作品集
       </button>
 
-      <section className="ui-case-intro section-reveal is-visible" aria-labelledby="yueerting-title">
-        <h1 id="yueerting-title" className="reveal-item is-visible">悦耳听</h1>
-        <p className="reveal-item is-visible">
+      <section className="ui-case-intro yue-case-intro" aria-labelledby="yueerting-title">
+        <div className="yue-case-title-row">
+          <h1 id="yueerting-title">悦耳听</h1>
+          <YueErTingLetterInteraction />
+        </div>
+        <p>
           以轻社交和个性化推荐为核心，为年轻用户打造纯净、沉浸的音乐 App 体验。
         </p>
       </section>
@@ -1465,6 +1845,7 @@ function YueErTingProjectPage({ onBackToWork }) {
         label="悦耳听 UI 界面展示"
         progressId="yueerting-gallery-progress"
         aspectRatio="804 / 1748"
+        revealItems={false}
       />
 
       <AssetGuardProjectSection />
@@ -1611,32 +1992,6 @@ function QianshanProjectPage({ onBackToWork }) {
         <span aria-hidden="true" />
       </footer>
     </main>
-  );
-}
-
-function AboutSection() {
-  return (
-    <section className="section about-section section-reveal" id="about" aria-labelledby="about-title">
-      <div className="about-intro reveal-item">
-        <h2 id="about-title">对 AI 时代的看法</h2>
-        <p>个人对未来趋势的看法</p>
-      </div>
-
-      <div className="capability-grid" aria-label="Capabilities">
-        {capabilities.map((capability, index) => (
-          <div
-            className="capability reveal-item"
-            key={capability.title || `capability-${index}`}
-            style={{ "--reveal-delay": `${index * 100}ms` }}
-          >
-            {capability.title ? <h3>{capability.title}</h3> : null}
-            {capability.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -1795,8 +2150,6 @@ export default function App() {
       ) : (
         <main className="home-page" id="top">
           <Hero onOpenResume={openResume} resumeTriggerRef={resumeTriggerRef} />
-          <CapabilitiesPanel />
-          <ExperienceRoute />
           <WorkSection
             onOpenPhotography={() => navigate("/works/poster")}
             onOpenPosterDesign={() => navigate("/works/poster-design")}
@@ -1804,7 +2157,8 @@ export default function App() {
             onOpenUiProject={() => navigate("/works/yueerting-ui")}
             onOpenBrandProject={() => navigate("/works/qianshan-farm")}
           />
-          <AboutSection />
+          <ExperienceRoute />
+          <CapabilitiesPanel />
         </main>
       )}
       {!isDetailPage ? <ContactSection /> : null}
