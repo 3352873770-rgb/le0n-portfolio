@@ -16,12 +16,12 @@ FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial Unicode.ttf")
 
 FONT = "ResumeSans"
 INK = HexColor("#0B2345")
-BLUE = HexColor("#1F5EFF")
+BLUE = HexColor("#1F5FC5")
 BODY = HexColor("#263447")
 MUTED = HexColor("#687284")
 PAPER = HexColor("#FBF8F1")
 LINE = Color(31 / 255, 94 / 255, 1, alpha=0.72)
-PORTFOLIO_URL = "https://3352873770-rgb.github.io/le0n-portfolio/#about"
+PORTFOLIO_URL = "https://3352873770-rgb.github.io/le0n-portfolio/#profile"
 
 
 def register_fonts():
@@ -33,14 +33,22 @@ def draw_wrapped_text(pdf, text, x, y, max_width, font_size=9.2, leading=16, col
     pdf.setFillColor(color)
     current = ""
     lines = []
+    last_break_index = -1
 
     for character in text:
         candidate = f"{current}{character}"
         if current and pdfmetrics.stringWidth(candidate, FONT, font_size) > max_width:
-            lines.append(current.rstrip())
-            current = character.lstrip()
+            if last_break_index > 0:
+                lines.append(current[:last_break_index].rstrip())
+                current = f"{current[last_break_index:]}{character}".lstrip()
+            else:
+                lines.append(current.rstrip())
+                current = character.lstrip()
+            last_break_index = -1
         else:
             current = candidate
+            if character.isspace():
+                last_break_index = len(current)
 
     if current:
         lines.append(current.rstrip())
@@ -164,7 +172,7 @@ def build_resume():
     draw_info_row(
         pdf,
         "作品集",
-        "https://3352873770-rgb.github.io/le0n-portfolio/#about",
+        "https://3352873770-rgb.github.io/le0n-portfolio/#profile",
         margin,
         info_y,
         font_size=7.4,
@@ -201,10 +209,10 @@ def build_resume():
     skills_y = draw_section_heading(pdf, "Skills", "技能掌握", right_x, skills_y, right_width)
 
     skills = [
-        ("UI / UX 设计", "信息架构、高保真界面、交互原型"),
-        ("视觉设计", "海报、品牌视觉、商业视觉"),
-        ("网页前端", "React、Vite、HTML / CSS、响应式页面"),
-        ("AI 协作工作流", "需求分析、方案探索、视觉生成、组件规范、前端落地"),
+        ("UI / UX 设计", "会写代码的设计师，能直接和前端对接，产出高保真原型"),
+        ("AI 协作工作流", "根据业务需求做 skill，设计稿高度还原前端代码，有自己的 vibe coding 项目"),
+        ("网页前端", "有设计审美的前端，做出来的页面不用设计师反复改"),
+        ("AI 产品经理", "设计 + vibe coding，能够独立把想法变成原型验证"),
         ("工具", "Figma、Photoshop、Codex、Stitch、HappyHorus、Vizcom"),
     ]
 
