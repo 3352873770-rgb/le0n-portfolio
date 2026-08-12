@@ -351,10 +351,10 @@ const resumeDetails = [
 ];
 
 const resumeSkills = [
-  { icon: Box, label: "UI / UX 设计", value: "信息架构、高保真界面、交互原型" },
-  { icon: Palette, label: "视觉设计", value: "海报、品牌视觉、商业视觉" },
-  { icon: Code2, label: "网页前端", value: "React、Vite、HTML / CSS、响应式页面" },
-  { icon: Sparkles, label: "AI 协作工作流", value: "需求分析、方案探索、视觉生成、组件规范、前端落地" },
+  { icon: Box, label: "UI / UX 设计", value: "会写代码的设计师，能直接和前端对接，产出高保真原型" },
+  { icon: Sparkles, label: "AI 协作工作流", value: "根据业务需求做 skill，设计稿高度还原前端代码，有自己的 vibe coding 项目" },
+  { icon: Code2, label: "网页前端", value: "有设计审美的前端，做出来的页面不用设计师反复改" },
+  { icon: Target, label: "AI 产品经理", value: "设计 + vibe coding，能够独立把想法变成原型验证" },
   { icon: Wrench, label: "工具", value: "Figma、Photoshop、Codex、Stitch、HappyHorus、Vizcom" },
 ];
 

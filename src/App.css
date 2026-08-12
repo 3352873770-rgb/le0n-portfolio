@@ -3411,7 +3411,7 @@ img {
 }
 
 .resume-detail p a {
-  color: inherit;
+  color: rgb(31, 95, 197);
   text-decoration-color: rgba(31, 94, 255, 0.48);
   text-underline-offset: 3px;
   transition: color 0.2s ease, text-decoration-color 0.2s ease;
