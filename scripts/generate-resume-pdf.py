@@ -212,7 +212,7 @@ def build_resume():
         ("UI / UX 设计", "会写代码的设计师，能直接和前端对接，产出高保真原型"),
         ("AI 协作工作流", "根据业务需求做 skill，设计稿高度还原前端代码，有自己的 vibe coding 项目"),
         ("网页前端", "有设计审美的前端，做出来的页面不用设计师反复改"),
-        ("AI 产品经理", "设计 + vibe coding，能够独立把想法变成原型验证"),
+        ("AI 产品经理（未来方向）", "设计 + vibe coding，能够独立把想法变成原型验证"),
         ("工具", "Figma、Photoshop、Codex、Stitch、HappyHorus、Vizcom"),
     ]
 
